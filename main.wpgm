@@ -1,0 +1,12 @@
+import wollok.game.*
+
+program PvzGame {
+    
+  game.title("Plantas vs Zombies")
+  game.height(6)
+  game.width(11)
+  game.cellSize(66)
+  
+  game.boardGround("background.png")
+  game.start()
+}
