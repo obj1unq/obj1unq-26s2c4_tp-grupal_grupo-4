@@ -3,8 +3,8 @@ import wollok.game.*
 
 
 class Planta {
-    var property position = game.at(1, 5)
-    var property image = "lanzaguisante"
+    var property position = game.at(1, 1)
+    var property image = "lanzaguisante.png"
     var property vida = 5
     var property costoEnSoles = 100 
     
@@ -13,6 +13,7 @@ class Planta {
     }
 }
 
+/*
 class LanzaGuisantes inherits Planta {
      var property position = game.at(1, 5)
       const property image = "lanzaguisante.png"
@@ -42,3 +43,5 @@ class Nuez inherits Planta {
         vida = 20
 
 }
+
+*/

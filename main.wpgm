@@ -5,12 +5,12 @@ import wollok.game.*
 program PvzGame {
     
   game.title("Plantas vs Zombies")
-  game.height(6)
-  game.width(11)
-  game.cellSize(66)
+  game.height(1)
+  game.width(4)
+  game.cellSize(4)
   
   game.boardGround("background.png")
-  game.start()
+
 
   const planta1 = new Planta()
   const zombie1 = new Zombie()

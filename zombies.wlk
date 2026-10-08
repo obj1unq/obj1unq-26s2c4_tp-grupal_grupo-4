@@ -1,7 +1,7 @@
 class Zombie {
-  var property position = game.at(3, 5)
-  var property image = "zomb"
-  var property vida
+  var property position = game.at(1, 4)
+  var property image = "zombie.png"
+  var property vida = 5
   
   method morir() {
     game.removeVisual(self)
@@ -15,7 +15,7 @@ class Zombie {
     
   }
 }
-
+/*
 class ZombieComun inherits Zombie {
   var image = "zombie.png"
   var vida = 10
@@ -30,3 +30,5 @@ class ZombieCono inherits Zombie {
   var image = "zombieCono.png"
   var vida = 15
 }
+
+*/
