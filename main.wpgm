@@ -15,7 +15,7 @@ program PvzGame {
 
 
   const planta1 = new Planta(position = game.at(0,2))
-  const zombie1 = new Zombie(position = game.at(8,2))
+  const zombie1 = new Zombie(position = game.at(7,2))
 
   game.addVisual(planta1)
   game.addVisual(zombie1)
