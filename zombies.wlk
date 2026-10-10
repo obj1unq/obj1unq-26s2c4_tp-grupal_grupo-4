@@ -1,5 +1,5 @@
 class Zombie {
-  var property position = game.at(1, 4)
+  var property position 
   var property image = "zombie.png"
   var property vida = 5
   

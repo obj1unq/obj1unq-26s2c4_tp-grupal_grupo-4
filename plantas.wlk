@@ -3,8 +3,8 @@ import wollok.game.*
 
 
 class Planta {
-    var property position = game.at(1, 1)
-    var property image = "lanzaguisante.png"
+    var property position 
+    var property image = "lanzaguisantes.png"
     var property vida = 5
     var property costoEnSoles = 100 
     
