@@ -19,7 +19,6 @@ program PvzGame {
 
   game.addVisual(planta1)
   game.addVisual(zombie1)
-
-
+  game.onTick(3000, "moverZombie", {zombie1.tick()})
   game.start()
 }
