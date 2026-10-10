@@ -1,0 +1,25 @@
+import zombies.*
+import plantas.*
+import wollok.game.*
+import tablero.*
+
+program PvzGame {
+    
+  game.title("Plantas vs Zombies")
+  game.height(5)
+  game.width(9)
+  game.cellSize(100)
+  // primero hay que dibujar el tablero para que no pise a las plantas y a los zombies visualmente
+  tablero.dibujarTablero()
+  //game.boardGround("background.png")
+
+
+  const planta1 = new Planta(position = game.at(0,2))
+  const zombie1 = new Zombie(position = game.at(7,2))
+
+  game.addVisual(planta1)
+  game.addVisual(zombie1)
+
+
+  game.start()
+}
