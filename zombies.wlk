@@ -1,5 +1,5 @@
 class Zombie {
-  var property position
+  var property position = game.at(8, 0)
   var property image = "zombie.png"
   var property vida = 5
   
@@ -12,10 +12,7 @@ class Zombie {
   }
 
   //Hay que hacer un metodo que haga todo lo que hace un zombie cuando pasa un tick: avanzar, atacar, morir, etc
-  method tick() {
-    
-    self.avanzar()
-  }
+
   
   method avanzar() {
     if (position.x() > 0) {
@@ -24,8 +21,12 @@ class Zombie {
     } else {
       // zombie llego al final del tablero
       self.morir()
-    }
-}
+    }}
+
+  method ponerZombie() {
+    
+  }
+
 }
 /*
 class ZombieComun inherits Zombie {
