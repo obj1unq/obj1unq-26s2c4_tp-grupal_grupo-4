@@ -26,5 +26,12 @@ object tablero {
         const pasto = new CeldaPasto(position = game.at(x, y))
         game.addVisual(pasto)
     }
+    /*
+    method crearZombie(x, y) {
+        const zombie = new Zombie(position = game.at(x, y))
+        game.addVisual(zombie)
+    }*/
+
+
 }
 
