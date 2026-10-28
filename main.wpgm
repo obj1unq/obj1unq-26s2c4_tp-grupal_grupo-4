@@ -3,6 +3,7 @@ import plantas.*
 import wollok.game.*
 import tablero.*
 import oleadas.*
+import manager.*
 program PvzGame {
 //Cosas a implementar: El manager, va a manejar los zombies vivos del nivel, con un metodo que se llame tick, que va a hacer avanzar a todos los zombies vivos, y va a chequear si hay algun zombie muerto para removerlo del juego. 
   game.height(5)
@@ -12,20 +13,16 @@ program PvzGame {
   tablero.dibujarTablero()
   //game.boardGround("background.png")
 
-
+  const managerzombies = new ManagerZobies()
   const planta1 = new Planta(position = game.at(0,2))
   const zombie1 = new Zombie()
-  const zombie2 = new Zombie()
-  const zombie3 = new Zombie()
-  const oleada1 = new Oleadas()
-  oleada1.cargarAOleada([zombie1, zombie2, zombie3])
-
+  const oleada1 = new Oleadas(managerZombies = managerzombies)
+  oleada1.agregarCantidadEntidad(3, {i=> new Zombie(velocidad = i)})
+  
 
   game.addVisual(planta1)
-  game.onTick(5000,"Generar Zombie", {oleada1.desencolarDeOleada()})
-  //esto es de prueba, en la proxima version se va a poner el manager de los niveles 
-  game.onTick(3000, "moverZombie", {zombie1.avanzar()})
-  game.onTick(3000, "moverZombie", {zombie2.avanzar()})
-  game.onTick(3000, "moverZombie", {zombie3.avanzar()})
+  game.onTick(5000,"Generar Zombie", {oleada1.tick()})
+  game.onTick(3000, "tick", {managerzombies.tick()})
+
   game.start()
 }

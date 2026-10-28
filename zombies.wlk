@@ -1,5 +1,7 @@
 class Zombie {
-  var property position = game.at(8, 0)
+  var property position = game.at(8,0)
+  var property velocidad = 1
+  var property contadorDeTicks = 0
   var property image = "zombie.png"
   var property vida = 5
   
@@ -10,38 +12,19 @@ class Zombie {
   method atacar(planta) {
     
   }
-
-  //Hay que hacer un metodo que haga todo lo que hace un zombie cuando pasa un tick: avanzar, atacar, morir, etc
-
-  
-  method avanzar() {
-    if (position.x() > 0) {
-      position = position.left(1)
-      
-    } else {
-      // zombie llego al final del tablero
-      self.morir()
-    }}
-
-  method ponerZombie() {
-    
+  method tieneQueMorir(){
+    return (vida == 0 or (position.x() <= 0))
   }
 
+  method debeMover(){
+    contadorDeTicks += 1
+    if(contadorDeTicks >=velocidad){ 
+    contadorDeTicks = 0
+    return true
+    }else { 
+    return false}
+  }
+  method puedeMover() {
+    return (not (position.x() == 0))
+  }
 }
-/*
-class ZombieComun inherits Zombie {
-  var image = "zombie.png"
-  var vida = 10
-}
-
-class ZombieBalde inherits Zombie {
-  var image = "zombieBalde.png"
-  var vida = 25
-}
-
-class ZombieCono inherits Zombie {
-  var image = "zombieCono.png"
-  var vida = 15
-}
-
-*/
