@@ -1,23 +1,32 @@
 import managers.manager.Manager
 class ManagerProyectiles inherits Manager{
     override method hacerPorCadaEntidad(proyectil){
-        if(proyectil.colsionaConZombie()){
-            const zombieColicionado = proyectil.zombieQueColsiono()
-            zombieColicionado.colcionConProyectil()
-            proyectil.sacarVisual()
-            self.sacarEntidad(proyectil)
+        if(self.colicionoConZombie(proyectil)){
+            const zombieColicionado = self.listaZombiesColisionados(proyectil).first()
+            zombieColicionado.colcionConProyectil(proyectil)
+            self.sacarDelManager(proyectil)
+  
         }
         else{
             if(proyectil.puedeMover()){
                 proyectil.mover()
             }else{
-                proyectil.sacarVisual()
-                self.sacarEntidad(proyectil)
+                self.sacarDelManager(proyectil)
             }
         }
     }
-    override method hacerPorTick(){
-      
+    
+    override method hacerPorTick(){}
+    
+    method listaZombiesColisionados(proyectil) {
+      return self.listaDeColisiones(proyectil).filter({entidades => entidades.tipo()=="Zombie"})
     }
+    method colicionoConZombie(proyectil){
+        return not self.listaZombiesColisionados(proyectil).isEmpty()
+    }
+
+    
+
+    
 
 }

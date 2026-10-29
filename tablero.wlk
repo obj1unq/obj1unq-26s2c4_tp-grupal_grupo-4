@@ -1,8 +1,9 @@
+import entidades.entidad.*
 import wollok.game.*
 
-class CeldaPasto {
-    var property position
-    method image() = "pasto.jpg"
+class CeldaPasto inherits Entidad(image = "pasto.jpg", tipo = "Celda") {
+    
+    
 }
 
 object tablero {

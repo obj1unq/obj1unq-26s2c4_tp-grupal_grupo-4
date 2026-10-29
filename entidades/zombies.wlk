@@ -1,19 +1,9 @@
-class Zombie {
-  var property position = game.at(8,0)
+import entidades.entidad.*
+class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10){
   var property velocidad = 1
   var property contadorDeTicks = 0
-  var property image = "zombie.png"
-  var property vida = 5
-  
-  method sacarVisual() {
-    game.removeVisual(self)
-  }
-  
 
-  method tieneQueMorir(){
-    return (vida <= 0 or (position.x() <= 0))
-  }
-
+  
   method debeMover(){
     contadorDeTicks += 1
     if(contadorDeTicks >=velocidad){ 
@@ -31,11 +21,12 @@ class Zombie {
     self.position(self.position().left(1)) 
    }
    }
-   method colcionConProyectil(){
-     vida= vida -10
-   }
+   
   method atacar(planta) {
     
   }
 
+  method colcionConProyectil(proyectil){
+    vida -= 10
+  }
 }

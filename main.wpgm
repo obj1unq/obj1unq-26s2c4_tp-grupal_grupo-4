@@ -1,9 +1,8 @@
-import zombies.*
-import plantas.*
-import proyectiles.*
+import entidades.zombies.*
+import entidades.plantas.*
+import entidades.proyectiles.*
 import tablero.*
 import wollok.game.*
-//import tablero.*
 
 //Todos los manager
 import managers.managerZombies.ManagerZobies
@@ -23,8 +22,8 @@ program PvzGame {
   const managerproyectiles = new ManagerProyectiles()
   const oleada1 = new Oleadas(managerZombies = managerzombies)
   const proyectil1 = new Proyectil(position = game.at(1, 2))
-  const zombie1 = new Zombie(position = game.at(8,2))
-  oleada1.agregarCantidadEntidad(3, {i=> new Zombie(position = game.at(8,2), velocidad = i+3)})
+  const zombie1 = new Zombie(position = game.at(8,2), velocidad= 1)
+  oleada1.agregarCantidadEntidad(3, {i=> new Zombie(position = game.at(1,0), velocidad = i+3)})
   managerproyectiles.agregarEntidad(proyectil1)
   managerzombies.agregarEntidad(zombie1)
 
@@ -32,13 +31,13 @@ program PvzGame {
 
 
   game.addVisual(planta1)
-  //game.addVisual(proyectil1)
-  //game.addVisual(zombie1)
+  game.addVisual(proyectil1)
+  game.addVisual(zombie1)
 
   //game.onTick(2000, "generarProyectil", {)})
-  //game.onTick(1000, "tickProyectil", {managerproyectiles.tick()})
+  game.onTick(1000, "tickProyectil", {managerproyectiles.tick()})
   game.onTick(5000,"Generar Zombie", {oleada1.tick()})
-  game.onTick(3000, "tick", {managerzombies.tick()})
+  game.onTick(1500, "tickZombie", {managerzombies.tick()})
 
   game.start()
 }

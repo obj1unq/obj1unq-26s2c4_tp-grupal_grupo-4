@@ -1,6 +1,6 @@
 import manager.*
 import random.*
-import zombies.*
+import entidades.zombies.Zombie.*
 
 
 class Oleadas inherits Manager {

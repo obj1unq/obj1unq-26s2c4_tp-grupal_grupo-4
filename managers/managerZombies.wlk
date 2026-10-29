@@ -8,8 +8,7 @@ class ManagerZobies inherits Manager {
     if(zombie.puedeMover() and not zombie.tieneQueMorir()){ 
     zombie.moverZombie()
       }else{
-        zombie.sacarVisual()
-        self.sacarEntidad(zombie)
+        self.sacarDelManager(zombie)
       }
     
 
