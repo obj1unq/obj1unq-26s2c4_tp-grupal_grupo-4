@@ -14,9 +14,14 @@ program PvzGame {
   //game.boardGround("background.png")
 
 
-  const planta1 = new Planta(position = game.at(0,2))
+  const girasol = new Girasol(image = "girasol.png", vida = 10, costoEnSoles = 25, position = game.at(0,2))
+  const planta1 = new LanzaGuisantes(image = "lanzaguisantes.png", vida = 5, costoEnSoles = 100, position = game.at(1,2))
   const zombie1 = new Zombie(position = game.at(7,2))
 
+
+  zombie1.moverse()
+  planta1.disparar()
+  game.addVisual(girasol)
   game.addVisual(planta1)
   game.addVisual(zombie1)
 

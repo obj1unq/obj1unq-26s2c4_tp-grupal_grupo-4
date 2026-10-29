@@ -3,6 +3,9 @@ import wollok.game.*
 class CeldaPasto {
     var property position
     method image() = "pasto.jpg"
+    method esZombie(){
+        return false
+    }
 }
 
 object tablero {
