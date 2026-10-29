@@ -1,25 +1,23 @@
-/*crear el proyectil se hace cargo la planta, proyectil va a ser una clase padre y proyectil normal clase hija, 
-class Proyectil {
-    
-}*/
+
 
 class Proyectil {
     var property position
     var property image = "proyectil.png"
     
-    method borrar() {
+    method sacarVisual() {
         game.removeVisual(self)
     }
 
-    method colisionaConZombie() {
+    method colsionaConZombie() {
+        return not game.colliders(self).isEmpty()
+    }
+    method zombieQueColsiono(){
+        return game.colliders(self).first()
+    }
+    method puedeMover() = position.x() < game.width() - 1
 
-    }
     method mover() {
-        if (position.x() < game.width() - 1 ) {
-            position = position.right(1)
-        } else {
-            // proyectil llego al final del tablero
-            self.borrar()
+        position = position.right(1)
         }
-    }
+    
 }
