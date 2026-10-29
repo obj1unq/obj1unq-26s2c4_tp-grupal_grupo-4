@@ -1,10 +1,15 @@
-import zombies.*
-import plantas.*
-import wollok.game.*
+import entidades.zombies.*
+import entidades.plantas.*
+import entidades.proyectiles.*
 import tablero.*
-import oleadas.*
+import wollok.game.*
+
+//Todos los manager
+import managers.managerZombies.ManagerZobies
+import managers.managerOleadas.Oleadas
+import managers.managerProyectiles.ManagerProyectiles
+
 program PvzGame {
-//Cosas a implementar: El manager, va a manejar los zombies vivos del nivel, con un metodo que se llame tick, que va a hacer avanzar a todos los zombies vivos, y va a chequear si hay algun zombie muerto para removerlo del juego. 
   game.height(5)
   game.width(9)
   game.cellSize(100)
@@ -12,20 +17,39 @@ program PvzGame {
   tablero.dibujarTablero()
   //game.boardGround("background.png")
 
-
   const planta1 = new Planta(position = game.at(0,2))
-  const zombie1 = new Zombie()
-  const zombie2 = new Zombie()
-  const zombie3 = new Zombie()
-  const oleada1 = new Oleadas()
-  oleada1.cargarAOleada([zombie1, zombie2, zombie3])
+  const managerzombies = new ManagerZobies()
+  const managerproyectiles = new ManagerProyectiles()
+  const oleada1 = new Oleadas(managerZombies = managerzombies)
+  const proyectil1 = new Proyectil(position = game.at(1, 2))
+  const zombie1 = new Zombie(position = game.at(8,2), velocidad= 1)
+  oleada1.agregarCantidadEntidad(3, {i=> new Zombie(position = game.at(1,0), velocidad = i+3)})
+  managerproyectiles.agregarEntidad(proyectil1)
+  managerzombies.agregarEntidad(zombie1)
+
+
 
 
   game.addVisual(planta1)
-  game.onTick(5000,"Generar Zombie", {oleada1.desencolarDeOleada()})
-  //esto es de prueba, en la proxima version se va a poner el manager de los niveles 
-  game.onTick(3000, "moverZombie", {zombie1.avanzar()})
-  game.onTick(3000, "moverZombie", {zombie2.avanzar()})
-  game.onTick(3000, "moverZombie", {zombie3.avanzar()})
+  game.addVisual(proyectil1)
+  game.addVisual(zombie1)
+
+  //game.onTick(2000, "generarProyectil", {)})
+  game.onTick(1000, "tickProyectil", {managerproyectiles.tick()})
+  game.onTick(5000,"Generar Zombie", {oleada1.tick()})
+  game.onTick(1500, "tickZombie", {managerzombies.tick()})
+
   game.start()
 }
+
+
+/*
+Queremos
+
+-zombies funcional
+-proyectil funciol
+-lanzaguizantes funcional
+-cabezal
+-poder poner lanzaguizantes
+
+*/

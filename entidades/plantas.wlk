@@ -1,13 +1,13 @@
+import entidades.entidad.*
 import wollok.game.*
 
 
 
-class Planta {
-    var property position 
-    var property image = "lanzaguisantes.png"
-    var property vida = 5
+class Planta inherits Mob(vida = 5, image = "lanzaguisantes.png", tipo = "Planta"){
+
     var property costoEnSoles = 100 
     
+    //lo hace el manager
     method morir() {
         game.removeVisual(self)
     }
