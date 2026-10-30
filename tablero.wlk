@@ -1,11 +1,9 @@
+import entidades.entidad.*
 import wollok.game.*
 
-class CeldaPasto {
-    var property position
-    method image() = "pasto.jpg"
-    method esZombie(){
-        return false
-    }
+class CeldaPasto inherits Entidad(image = "pasto.jpg", tipo = "Celda") {
+    
+    
 }
 
 object tablero {
@@ -29,5 +27,11 @@ object tablero {
         const pasto = new CeldaPasto(position = game.at(x, y))
         game.addVisual(pasto)
     }
-}
+    /*
+    method crearZombie(x, y) {
+        const zombie = new Zombie(position = game.at(x, y))
+        game.addVisual(zombie)
+    }*/
 
+
+}

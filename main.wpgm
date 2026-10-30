@@ -1,30 +1,62 @@
-import zombies.*
-import plantas.*
-import wollok.game.*
+import entidades.zombies.*
+import entidades.plantas.*
+import entidades.proyectiles.*
 import tablero.*
+import wollok.game.*
+
+//Todos los manager
+import managers.managerZombies.ManagerZobies
+import managers.managerOleadas.Oleadas
+import managers.managerProyectiles.ManagerProyectiles
 
 program PvzGame {
-    
-  game.title("Plantas vs Zombies")
   game.height(5)
   game.width(9)
   game.cellSize(100)
   // primero hay que dibujar el tablero para que no pise a las plantas y a los zombies visualmente
   tablero.dibujarTablero()
   //game.boardGround("background.png")
+  const managerproyectiles = new ManagerProyectiles()
+  const managerzombies = new ManagerZobies()
+  const oleada1 = new Oleadas(managerZombies = managerzombies)
+
+  const nuez1 = new Nuez (position = game.at(0,3))
+  const girasol1 = new Girasol (position = game.at(0,2))
+  const lanzaguisante1 = new LanzaGuisante (position = game.at(1,2),
+                                            managerProyectiles = managerproyectiles)
+
+  const proyectil1 = new Proyectil(position = game.at(1, 2))
+  const zombie1 = new Zombie(position = game.at(8,2), velocidad= 1)
+  oleada1.agregarCantidadEntidad(3, {i=> new Zombie(position = game.at(1,0), velocidad = i+3)})
+  managerproyectiles.agregarEntidad(proyectil1)
+  managerzombies.agregarEntidad(zombie1)
+  game.onTick(5000, "generarSol", {girasol1.generarSol()})
 
 
-  const girasol = new Girasol(image = "girasol.png", vida = 10, costoEnSoles = 25, position = game.at(0,2))
-  const planta1 = new LanzaGuisantes(image = "lanzaguisantes.png", vida = 5, costoEnSoles = 100, position = game.at(1,2))
-  const zombie1 = new Zombie(position = game.at(7,2))
 
 
-  zombie1.moverse()
-  planta1.disparar()
-  game.addVisual(girasol)
-  game.addVisual(planta1)
+  game.addVisual(lanzaguisante1)
+  game.addVisual(proyectil1)
   game.addVisual(zombie1)
+  game.addVisual(girasol1)
+  game.addVisual(nuez1)
 
+  //game.onTick(2000, "generarProyectil", {)})
+  game.onTick(1000, "tickProyectil", {managerproyectiles.tick()})
+  game.onTick(5000,"Generar Zombie", {oleada1.tick()})
+  game.onTick(1500, "tickZombie", {managerzombies.tick()})
 
   game.start()
 }
+
+
+/*
+Queremos
+
+-zombies funcional
+-proyectil funciol
+-lanzaguizantes funcional
+-cabezal
+-poder poner lanzaguizantes
+
+*/
