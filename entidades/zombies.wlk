@@ -2,6 +2,7 @@ import entidades.entidad.*
 class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10){
   var property velocidad = 1
   var property contadorDeTicks = 0
+  var property daño 
 
   
   method debeMover(){
@@ -23,7 +24,8 @@ class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10){
    }
    
   method atacar(planta) {
-    
+      console.println("zombie ataca, vida planta: " + planta.vida())
+      planta.recibirDaño(self.daño())
   }
 
   method colcionConProyectil(proyectil){

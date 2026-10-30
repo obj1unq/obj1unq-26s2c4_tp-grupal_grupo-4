@@ -17,10 +17,16 @@ class Entidad{
 
 
 class Mob inherits Entidad{
-    var property vida = 5
+
+  /* aca hice el cambio de que var property vida directamente este vacio y cada 
+  clase hija haga ponga su propia vida
+  */
+    var property vida 
 
     method tieneQueMorir(){
     return (vida <= 0)
+
+
   }
     
 
