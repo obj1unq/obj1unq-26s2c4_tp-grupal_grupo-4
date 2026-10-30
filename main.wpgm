@@ -1,0 +1,65 @@
+import entidades.zombies.*
+import entidades.plantas.*
+import entidades.proyectiles.*
+import tablero.*
+import wollok.game.*
+
+//Todos los manager
+import managers.managerZombies.ManagerZobies
+import managers.managerOleadas.Oleadas
+import managers.managerProyectiles.ManagerProyectiles
+import managers.managerPlantas.ManagerPlantas
+
+program PvzGame {
+  game.height(5)
+  game.width(9)
+  game.cellSize(100)
+  // primero hay que dibujar el tablero para que no pise a las plantas y a los zombies visualmente
+  tablero.dibujarTablero()
+  //game.boardGround("background.png")
+  const managerproyectiles = new ManagerProyectiles()
+  const managerzombies = new ManagerZobies()
+  const oleada1 = new Oleadas(managerZombies = managerzombies)
+  const managerplantas = new ManagerPlantas()
+
+  const nuez1 = new Nuez (position = game.at(7,3))
+  const girasol1 = new Girasol (position = game.at(0,2))
+  const lanzaguisante1 = new LanzaGuisante (position = game.at(1  ,2),
+                                            managerProyectiles = managerproyectiles)
+
+  const zombie1 = new Zombie(position = game.at(8,3), velocidad= 1, daño = 10)
+  oleada1.agregarCantidadEntidad(3, {i=> new Zombie(position = game.at(1,0), velocidad = i+3, daño = 10)})
+  managerzombies.agregarEntidad(zombie1)
+  managerplantas.agregarEntidad(lanzaguisante1)
+  managerplantas.agregarEntidad(girasol1)
+  managerplantas.agregarEntidad(nuez1)
+  game.onTick(5000, "generarSol", {girasol1.generarSol()})
+
+
+
+
+  game.addVisual(lanzaguisante1)
+  game.addVisual(zombie1)
+  game.addVisual(girasol1)
+  game.addVisual(nuez1)
+
+  //game.onTick(2000, "generarProyectil", {)})
+  game.onTick(1000, "tickProyectil", {managerproyectiles.tick()})
+  game.onTick(5000,"Generar Zombie", {oleada1.tick()})
+  game.onTick(1500, "tickZombie", {managerzombies.tick()})
+  game.onTick(1000, "tickPlantas", {managerplantas.tick()})
+
+  game.start()
+}
+
+
+/*
+Queremos
+
+-zombies funcional
+-proyectil funciol
+-lanzaguizantes funcional
+-cabezal
+-poder poner lanzaguizantes
+
+*/
