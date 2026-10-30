@@ -1,4 +1,4 @@
-import managers.manager.Manager
+giimport managers.manager.Manager
 class ManagerProyectiles inherits Manager{
     override method hacerPorCadaEntidad(proyectil){
         if(self.colicionoConZombie(proyectil)){
