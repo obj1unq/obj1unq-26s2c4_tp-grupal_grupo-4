@@ -13,6 +13,9 @@ class ManagerZobies inherits Manager {
     
 
   }
+  // consulta para la partida: un zombie que ya no puede avanzar llegó a la casa
+  method algunZombieLlegoALaCasa() = Entidades.any({ zombie => not zombie.puedeMover() })
+
   override method hacerPorTick(){
     //self.hayEntidades()
     
