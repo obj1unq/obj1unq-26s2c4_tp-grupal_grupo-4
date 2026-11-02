@@ -1,9 +1,0 @@
-import wollok.game 
-
-describe "Test para Plantas vs Zombies" {
-
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
-  }
-
-}

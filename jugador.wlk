@@ -8,7 +8,7 @@ object jugador {
     method nombre() = nombre
     method soles() = soles
 
-    // soles: nadie toca la variable directamente, se le pide al jugador
+    // se reinician los soles por si se juega una segunda partida
     method reiniciarSoles() {
         soles = solesIniciales
     }
@@ -23,27 +23,27 @@ object jugador {
         if (not self.puedePagar(cantidad)) {
             self.error("No te alcanzan los soles")
         }
-        soles -= cantidad
+        soles -= cantidad // se resta la cantidad gastada a los soles que tenemos 
     }
 
-    // nombre: se arma letra por letra desde la pantalla de nombre
+    // deja el nombre vacio, para luego setearlo manualmente letra x letra
     method borrarNombre() {
         nombre = ""
     }
 
     method escribirLetra(letra) {
         if (nombre.size() < largoMaximoNombre) {
-            nombre = nombre + letra
+            nombre = nombre + letra // sumamos una letra al nombre 
         }
     }
 
     method borrarLetra() {
         if (not nombre.isEmpty()) {
-            nombre = nombre.substring(0, nombre.size() - 1)
+            nombre = nombre.substring(0, nombre.size() - 1) // restamos letra al nombre
         }
     }
 
-    method validarNombre() {
+    method validarNombre() { // excepcion que sirve para que no arranquemos el juego sin nombre
         if (nombre.isEmpty()) {
             self.error("Escribí tu nombre primero")
         }

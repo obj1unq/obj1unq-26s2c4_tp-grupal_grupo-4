@@ -1,4 +1,4 @@
-import zombies.*
+//import zombies.*
 
 class Proyectil {
   var property position

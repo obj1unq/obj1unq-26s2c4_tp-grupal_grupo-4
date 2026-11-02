@@ -19,19 +19,19 @@ object juego {
         game.height(6) // 5 filas de pasto + 1 de panel
         game.width(9)
         game.cellSize(100)
-        self.cambiarA(menuPrincipal)
+        self.cambiar(menuPrincipal)
     }
 
     // Cada pantalla (menuPrincipal, pantallaNombre, partida, victoria, derrota) entiende mostrar().
     // El juego no pregunta cuál es: limpia todo y le dice que se muestre (polimorfismo).
-    method cambiarA(pantalla) {
+    method cambiar(pantalla) {
         game.clear()
         pantalla.mostrar()
     }
 
     // se llama desde adentro de un tick: se espera a que ese tick termine antes de limpiar todo
     method terminar(pantallaFinal) {
-        game.schedule(1, { self.cambiarA(pantallaFinal) })
+        game.schedule(1, { self.cambiar(pantallaFinal) })
     }
 }
 

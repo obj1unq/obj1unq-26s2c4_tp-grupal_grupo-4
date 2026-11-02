@@ -11,12 +11,12 @@ object menuPrincipal {
 
     method mostrar() {
         game.addVisual(self)
-        keyboard.enter().onPressDo({ self.jugar() })
+        keyboard.enter().onPressDo({ self.jugar() }) // aca con la tecla enter pasamos a la pantalla donde seteamos nuestro nombre 
     }
 
     // con Enter pasamos a pedir el nombre y de ahí al juego
     method jugar() {
-        juego.cambiarA(pantallaNombre)
+        juego.cambiar(pantallaNombre)
     }
 }
 
@@ -51,7 +51,7 @@ object pantallaNombre {
 
     method confirmar() {
         jugador.validarNombre()
-        juego.cambiarA(partida)
+        juego.cambiar(partida)
     }
 }
 
@@ -65,7 +65,7 @@ class PantallaFinal {
                                   text = titulo + ", " + jugador.nombre() + "!",
                                   textColor = colorTitulo))
         game.addVisual(new Cartel(position = game.at(4, 2), text = "ENTER para volver al menú"))
-        keyboard.enter().onPressDo({ juego.cambiarA(menuPrincipal) })
+        keyboard.enter().onPressDo({ juego.cambiar(menuPrincipal) })
     }
 }
 
