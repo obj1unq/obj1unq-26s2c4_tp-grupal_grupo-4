@@ -12,6 +12,9 @@ class Entidad{
       game.removeVisual(self)
     }
 
+    // double dispatch con el cabezal: por defecto no pasa nada (pasto, plantas, zombies...)
+    method tocadoPorCabezal(cabezal) {}
+
 }
 
 

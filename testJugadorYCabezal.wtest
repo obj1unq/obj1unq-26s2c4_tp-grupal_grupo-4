@@ -1,0 +1,93 @@
+import wollok.game.*
+import jugador.*
+import cabezal.*
+import cartas.*
+import juego.*
+import extras.*
+import managers.managerPlantas.ManagerPlantas
+import managers.managerProyectiles.ManagerProyectiles
+
+describe "jugador" {
+
+    method initialize() {
+        jugador.reiniciarSoles() // arranca con 150
+    }
+
+    test "ganar y gastar soles" {
+        jugador.ganarSoles(25)
+        jugador.gastarSoles(50)
+        assert.equals(125, jugador.soles())
+    }
+
+    test "no se pueden gastar más soles de los que hay" {
+        assert.throwsException({ jugador.gastarSoles(200) })
+        assert.equals(150, jugador.soles())
+    }
+
+    test "el nombre se escribe y se borra letra por letra" {
+        jugador.borrarNombre()
+        jugador.escribirLetra("f")
+        jugador.escribirLetra("r")
+        jugador.escribirLetra("a")
+        jugador.borrarLetra()
+        assert.equals("fr", jugador.nombre())
+    }
+
+    test "no se puede jugar sin nombre" {
+        jugador.borrarNombre()
+        assert.throwsException({ jugador.validarNombre() })
+    }
+}
+
+describe "cabezal" {
+
+    method initialize() {
+        partida.managerPlantas(new ManagerPlantas())
+        partida.managerProyectiles(new ManagerProyectiles())
+        cabezal.position(game.at(3, 2))
+        jugador.reiniciarSoles() // arranca con 150
+    }
+
+    test "plantar un lanzaguisante cobra 100 soles y lo agrega al manager" {
+        cabezal.plantar(cartaLanzaguisante)
+        assert.equals(50, jugador.soles())
+        assert.that(partida.managerPlantas().hayPlantaEn(game.at(3, 2)))
+    }
+
+    test "no se puede plantar dos veces en la misma celda y no se cobra el segundo intento" {
+        jugador.ganarSoles(100)
+        cabezal.plantar(cartaLanzaguisante)
+        assert.throwsException({ cabezal.plantar(cartaLanzaguisante) })
+        assert.equals(150, jugador.soles())
+    }
+
+    test "sin soles suficientes no se planta" {
+        jugador.gastarSoles(130)
+        assert.throwsException({ cabezal.plantar(cartaLanzaguisante) })
+        assert.notThat(partida.managerPlantas().hayPlantaEn(game.at(3, 2)))
+    }
+
+    test "sacar la planta deja la celda libre" {
+        cabezal.plantar(cartaLanzaguisante)
+        cabezal.sacarPlantaDeAca()
+        assert.notThat(partida.managerPlantas().hayPlantaEn(game.at(3, 2)))
+    }
+
+    test "sacar donde no hay planta da error" {
+        assert.throwsException({ cabezal.sacarPlantaDeAca() })
+    }
+
+    test "el cabezal no sale del pasto" {
+        cabezal.position(game.at(0, 0))
+        cabezal.moverA(game.at(-1, 0))
+        assert.equals(game.at(0, 0), cabezal.position())
+    }
+
+    test "al tocar un sol el jugador gana soles" {
+        const sol = new Sol(position = game.at(3, 2))
+        game.addVisual(sol)
+        sol.tocadoPorCabezal(cabezal)
+        assert.equals(175, jugador.soles())
+        assert.notThat(game.hasVisual(sol))
+    }
+}
