@@ -26,11 +26,15 @@ program PvzGame {
   const girasol1 = new Girasol (position = game.at(0,2))
   const lanzaguisante1 = new LanzaGuisante (position = game.at(1  ,2),
                                             managerProyectiles = managerproyectiles)
+  const lanzaguisante2 = new LanzaGuisante (position = game.at(1  ,3),
+                                            managerProyectiles = managerproyectiles)
 
-  const zombie1 = new Zombie(position = game.at(8,3), velocidad= 1, daño = 10)
+  const zombie1 = new Zombie(position = game.at(8,3), velocidad= 2, daño = 10)
+
   oleada1.agregarCantidadEntidad(3, {i=> new Zombie(position = game.at(1,0), velocidad = i+3, daño = 10)})
   managerzombies.agregarEntidad(zombie1)
   managerplantas.agregarEntidad(lanzaguisante1)
+  managerplantas.agregarEntidad(lanzaguisante2)
   managerplantas.agregarEntidad(girasol1)
   managerplantas.agregarEntidad(nuez1)
   game.onTick(5000, "generarSol", {girasol1.generarSol()})
