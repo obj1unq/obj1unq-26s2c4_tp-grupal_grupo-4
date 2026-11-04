@@ -1,0 +1,21 @@
+import wollok.game.*
+import juego.*
+
+program PvzGame {
+  // el armado de la partida (managers, plantas, zombies, ticks) está en partida.mostrar() de juego.wlk
+  // acá solo se configura el juego, que arranca mostrando el menú principal
+  juego.configurar()
+  game.start()
+}
+
+
+/*
+Queremos
+
+-zombies funcional
+-proyectil funciol
+-lanzaguizantes funcional
+-cabezal
+-poder poner lanzaguizantes
+
+*/
