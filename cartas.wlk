@@ -23,8 +23,7 @@ object cartaGirasol inherits Carta(tecla = 1, image = "girasol.png") {
 }
 
 object cartaLanzaguisante inherits Carta(tecla = 2, image = "cartaLanzaguisante.png") {
-    override method crearPlantaEn(posicion) = new LanzaGuisante(position = posicion,
-                                                                managerProyectiles = partida.managerProyectiles())
+    override method crearPlantaEn(posicion) = new LanzaGuisante(position = posicion)
 }
 
 object cartaNuez inherits Carta(tecla = 3, image = "nuez.png") {

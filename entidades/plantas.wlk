@@ -11,12 +11,6 @@ class Planta inherits Mob{
     var contadorDeTicks = 0
 
 
-    //lo hace el manager    
-    method morir() {
-        game.removeVisual(self)
-    }
-
-
     method recibirDaño(cantidad){
         vida -= cantidad
     }
@@ -33,27 +27,18 @@ class Planta inherits Mob{
         }
     }
 
-    method accionar(){
-
-    }
+    method accionar(manager){}
 
 
 }
 
 
-class LanzaGuisante inherits Planta (image = "lanzaguisantes.png", costoEnSoles = 100, vida = 5, tipo = "Planta")
-                                    {
-    const managerProyectiles
+class LanzaGuisante inherits Planta (image = "lanzaguisantes.png", costoEnSoles = 100, vida = 5, tipo = "Planta"){
+     
 
-    
-    method disparar() {
-        const guisante = new Proyectil (position = self.position().right(1))
-        managerProyectiles.agregarEntidad(guisante)
-        game.addVisual(guisante)
-    }
-
-    override method accionar(){
-        self.disparar()
+    override method accionar(manager){
+        
+        manager.debeDisparar(new Proyectil(position = self.position()))
     }
 
 }
@@ -67,7 +52,7 @@ class Girasol inherits Planta(image = "girasol.png", costoEnSoles = 50, vida = 5
         sol.aparecer()
     }
 
-    override method accionar(){
+    override method accionar(manager){
         self.generarSol()
     }
 }

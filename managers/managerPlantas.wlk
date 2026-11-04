@@ -1,11 +1,14 @@
 import managers.manager.*
 
 class ManagerPlantas inherits Manager{
+    const property managerDeProyectiles 
+    //const property managerDeSoles 
+
     override method hacerPorCadaEntidad(planta){
         if (planta.tieneQueMorir()){
             self.sacarDelManager(planta)
         } else if (planta.debeActuar()){
-            planta.accionar()
+            planta.accionar(self)
         }
     }
 
@@ -13,6 +16,11 @@ class ManagerPlantas inherits Manager{
 
     }
 
+    //
+    method debeDisparar(proyectil){
+        managerDeProyectiles.agregarEntidad(proyectil)
+        // Mirar Despues, el manager de plantas pone la visual del proyectil
+    }
     // consultas sobre la colección: las responde el dueño de la colección
     method hayPlantaEn(posicion) = Entidades.any({ planta => planta.position() == posicion })
 

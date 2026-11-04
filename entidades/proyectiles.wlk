@@ -2,7 +2,8 @@ import entidades.entidad.*
 
 
 class Proyectil inherits Entidad(image = "proyectil.png", tipo = "Proyectil") {
-       
+
+
     
     method colsionaConZombie(entidad) {
         return self.colicionaConTipo(entidad, "Zombie")

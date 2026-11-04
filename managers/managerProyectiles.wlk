@@ -1,5 +1,9 @@
 import managers.manager.Manager
 class ManagerProyectiles inherits Manager{
+        override method agregarEntidad(entidad) {
+        super(entidad)
+        game.addVisual(entidad)
+        }   
     override method hacerPorCadaEntidad(proyectil){
         if(self.colicionoConZombie(proyectil)){
             const zombieColicionado = self.listaZombiesColisionados(proyectil).first()
