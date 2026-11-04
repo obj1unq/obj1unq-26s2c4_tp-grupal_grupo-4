@@ -7,6 +7,7 @@ import juego.*
 object cabezal {
     var property position = game.at(0, 0)
 
+    method tipo(){}
     method image() = "cabezal.png"
 
     // MOVIMIENTO: solo dentro del pasto, nunca sobre el panel

@@ -1,5 +1,4 @@
 import random.*
-import entidades.zombies.Zombie.*
 class Manager {
   var property Entidades = []
   
@@ -38,7 +37,8 @@ class Manager {
   //ticks
   method tick() {
     self.hacerPorTick()
-    Entidades.forEach({entidad => self.hacerPorCadaEntidad(entidad)})
+    Entidades.copy().forEach({ entidad =>self.hacerPorCadaEntidad(entidad)})
+    //Entidades.forEach({entidad => self.hacerPorCadaEntidad(entidad)})
   }
 
   

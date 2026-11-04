@@ -11,6 +11,7 @@ import managers.managerZombies.ManagerZobies
 import managers.managerOleadas.Oleadas
 import managers.managerProyectiles.ManagerProyectiles
 import managers.managerPlantas.ManagerPlantas
+import managers.managerDeSoles.ManagerDeSoles
 
 object juego {
 
@@ -40,7 +41,7 @@ object partida {
     var property managerZombies = null
     var property managerPlantas = null
     var property oleada = null
-
+    var property managerDeSoles = null
     method mostrar() {
         jugador.reiniciarSoles()
         // primero hay que dibujar el tablero para que no pise a las plantas y a los zombies visualmente
@@ -54,15 +55,15 @@ object partida {
     method crearManagers() {
         managerProyectiles = new ManagerProyectiles()
         managerZombies = new ManagerZobies()
-        managerPlantas = new ManagerPlantas()
+        managerPlantas = new ManagerPlantas(managerDeProyectiles = managerProyectiles)
         oleada = new Oleadas(managerZombies = managerZombies)
+        managerDeSoles = new ManagerDeSoles()
     }
 
     method agregarEntidadesIniciales() {
         const nuez1 = new Nuez (position = game.at(7,3))
         const girasol1 = new Girasol (position = game.at(0,2))
-        const lanzaguisante1 = new LanzaGuisante (position = game.at(1  ,2),
-                                                  managerProyectiles = managerProyectiles)
+        const lanzaguisante1 = new LanzaGuisante (position = game.at(1  ,2))
 
         const zombie1 = new Zombie(position = game.at(8,3), velocidad= 1, daño = 10)
         oleada.agregarCantidadEntidad(3, {i=> new Zombie(position = game.at(1,0), velocidad = i+3, daño = 10)})
@@ -79,12 +80,12 @@ object partida {
     }
 
     method programarTicks() {
-        game.onTick(1000, "tickProyectil", {managerProyectiles.tick()})
+        game.onTick(500, "tickProyectil", {managerProyectiles.tick()})
         game.onTick(5000,"Generar Zombie", {oleada.tick()})
         game.onTick(1500, "tickZombie", {managerZombies.tick()})
         game.onTick(1000, "tickPlantas", {managerPlantas.tick()})
         // por ahora los soles suben solos
-        game.onTick(3000, "solesAutomaticos", {jugador.ganarSoles(25)})
+        game.onTick(3000, "solesAutomaticos", {managerDeSoles.tick()})
         // cada 1000 ms: más seguido que el tick de zombies (1500 ms), así no se escapa uno que llegó a la casa
         game.onTick(1000, "chequearFinDelJuego", {self.chequearFinDelJuego()})
     }
