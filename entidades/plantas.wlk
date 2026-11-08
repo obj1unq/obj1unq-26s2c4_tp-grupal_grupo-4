@@ -10,12 +10,34 @@ class Planta inherits Mob{
     const property ticksPorAccion = 5 // podria cambiarlo para cada tipo de planta
     var contadorDeTicks = 0
 
+    method avanzarTick() { 
+        contadorDeTicks += 1 
+    }
+
+    method reiniciarContador() { 
+        contadorDeTicks = 0 
+    }
+    
+    method debeActuar() = contadorDeTicks >= ticksPorAccion
+
+    method ejecutarTick(manager) { 
+        self.avanzarTick() 
+        if (self.debeActuar()) { 
+            self.reiniciarContador() 
+            self.accionar(manager) 
+        } 
+    }
 
     method recibirDaño(cantidad){
         vida -= cantidad
     }
 
-//TODAVIA NO ESTA IMPLEMENTADO EN LOS ZOMBIES QUE HAGAN DAÑO A LAS PLANTAS. DEBERIA FUNCIONAR.
+
+    /*
+    method recibirDaño(cantidad){
+        vida -= cantidad
+    }
+
 
     method debeActuar(){
         contadorDeTicks += 1
@@ -26,7 +48,7 @@ class Planta inherits Mob{
             return false
         }
     }
-
+*/
     method accionar(manager){}
 
 

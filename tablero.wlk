@@ -20,7 +20,7 @@ object contadorSoles {
 }
 
 object tablero {
-
+    method tipo(){}
     // la fila de arriba de todo es el panel, el resto es pasto
     method filaDelPanel() = game.height() - 1
 

@@ -7,8 +7,8 @@ class ManagerPlantas inherits Manager{
     override method hacerPorCadaEntidad(planta){
         if (planta.tieneQueMorir()){
             self.sacarDelManager(planta)
-        } else if (planta.debeActuar()){
-            planta.accionar(self)
+        } else {
+            planta.ejecutarTick(self)
         }
     }
 
