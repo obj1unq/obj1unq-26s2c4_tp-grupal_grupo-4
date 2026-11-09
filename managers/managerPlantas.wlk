@@ -2,6 +2,8 @@ import managers.manager.*
 
 class ManagerPlantas inherits Manager{
     const property managerDeProyectiles 
+    const property managerDeZombies // para que funcione PetaCereza, Patapum y PlantaCarnivora
+
     //const property managerDeSoles 
 
     override method hacerPorCadaEntidad(planta){
@@ -37,6 +39,11 @@ class ManagerPlantas inherits Manager{
         self.validarCeldaLibre(planta.position())
         self.agregarEntidad(planta)
         game.addVisual(planta)
+    }
+
+
+    method AccionarEn(celdas, daño){
+        managerDeZombies.zombiesEn(celdas).forEach({ zombie => zombie.recibirDaño(daño) })
     }
 
 }

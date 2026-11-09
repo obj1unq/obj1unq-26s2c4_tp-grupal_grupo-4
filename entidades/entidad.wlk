@@ -31,7 +31,11 @@ class Mob inherits Entidad{
 
 
   }
-    
 
+      method recibirDaño(cantidad){
+        vida -= cantidad
+  }
+    
+//subi recibir daño a la clase mob para hacer polimorfismo con las acciones nuevas de las plantas.
 
 }
