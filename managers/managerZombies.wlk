@@ -33,5 +33,8 @@ class ManagerZobies inherits Manager {
     
   }
 
+  method zombiesEn(celdas) =
+    Entidades.filter({ zombie => celdas.contains(zombie.position()) })
 
+    //metodo para la clase patapum, petacereza y planta carnivora. recibe informacion de las posiciones
 }

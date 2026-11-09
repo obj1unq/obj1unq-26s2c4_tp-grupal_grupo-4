@@ -1,6 +1,6 @@
 object jugador {
     var nombre = ""
-    var soles = 0
+    var soles = 4000
     const solesIniciales = 150
     const largoMaximoNombre = 12
 

@@ -28,9 +28,7 @@ class Planta inherits Mob{
         } 
     }
 
-    method recibirDaño(cantidad){
-        vida -= cantidad
-    }
+
 
 
     /*
@@ -65,6 +63,22 @@ class LanzaGuisante inherits Planta (image = "lanzaguisantes.png", costoEnSoles 
 
 }
 
+class HielaGuisante inherits LanzaGuisante(image = "hieloguisante.png", costoEnSoles = 150, vida = 5, tipo = "Planta"){
+    override method accionar(manager){
+        manager.debeDisparar(new Proyectil(position = self.position()))
+        //se creara un proyectil de hielo eventualmente
+    }
+}
+
+class Repetidora inherits LanzaGuisante(image = "repetidora.png", costoEnSoles = 200, vida = 5, tipo = "Planta"){
+     
+    override method accionar(manager){
+        
+        manager.debeDisparar(new Proyectil(position = self.position()))
+        manager.debeDisparar(new Proyectil(position = self.position()))
+    }
+    //podriamos crear un nuevo  proyectil que haga mas daño en vez de que dispare 2 proyectiles
+}
 
 class Girasol inherits Planta(image = "girasol.png", costoEnSoles = 50, vida = 5, tipo = "Planta" ){
 
@@ -81,4 +95,64 @@ class Girasol inherits Planta(image = "girasol.png", costoEnSoles = 50, vida = 5
 
 class Nuez inherits Planta (image = "nuez.png", costoEnSoles = 100, vida = 10, tipo = "Planta"){
 
+}
+
+class PlantaCarnivora inherits Planta(image = "plantaCarnivora.png", costoEnSoles = 150, vida = 5, tipo = "Planta", ticksPorAccion = 5){
+    const property dañoMortida = 100
+
+    method celdasQueCome() = [
+        self.position(),
+        self.position().right(1)
+    ]
+
+    override method accionar(manager){
+            manager.AccionarEn(self.celdasQueCome(), self.dañoMortida())
+        }
+    }
+
+
+class PlantaExplosiva inherits Planta{
+    const dañoExplosion = 100
+
+    method celdasAlrededor()
+
+    method explotar(manager){
+        manager.AccionarEn(self.celdasAlrededor(), dañoExplosion)
+        manager.sacarDelManager(self)
+    }
+
+    override method accionar(manager){
+        self.explotar(manager)
+    }
+    
+}
+
+class Petacereza inherits PlantaExplosiva(image = "petaCereza.png", costoEnSoles = 200, vida = 50, tipo = "Planta", ticksPorAccion = 3){
+
+    override method celdasAlrededor() = [
+        self.position(),
+        self.position().up(1),
+        self.position().down(1),
+        self.position().left(1),
+        self.position().right(1),
+        self.position().up(1).left(1),
+        self.position().up(1).right(1),
+        self.position().down(1).left(1),
+        self.position().down(1).right(1)
+    ]
+}
+
+class Patapum inherits PlantaExplosiva(image = "patapum.png", costoEnSoles = 50, vida = 50, tipo = "Planta", ticksPorAccion = 3){
+
+    override method accionar(manager){
+        if (vida < 50){
+            self.explotar(manager)
+        }
+    }
+
+    override method celdasAlrededor() = [
+        self.position(),
+        self.position().left(1),
+        self.position().right(1)
+    ]
 }

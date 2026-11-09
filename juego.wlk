@@ -55,7 +55,7 @@ object partida {
     method crearManagers() {
         managerProyectiles = new ManagerProyectiles()
         managerZombies = new ManagerZobies()
-        managerPlantas = new ManagerPlantas(managerDeProyectiles = managerProyectiles)
+        managerPlantas = new ManagerPlantas(managerDeProyectiles = managerProyectiles, managerDeZombies = managerZombies) // agregado para que funcionen las nuevas clases
         oleada = new Oleadas(managerZombies = managerZombies)
         managerDeSoles = new ManagerDeSoles()
     }

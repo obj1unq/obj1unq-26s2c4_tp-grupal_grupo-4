@@ -38,4 +38,6 @@ class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10){
   method colcionConProyectil(proyectil){
     vida -= 10
   }
+
+
 }   
