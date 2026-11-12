@@ -7,6 +7,7 @@ class ManagerDeSoles inherits Manager{
         const x = (0 .. game.width() - 1).anyOne()
         const y = (0 .. game.height() - 2).anyOne() 
         return game.at(x, y) }
+        
     method generarSolAleatorio() { 
         if(tickProximoSol==0){ 
             tickProximoSol = (1 .. 3).anyOne()

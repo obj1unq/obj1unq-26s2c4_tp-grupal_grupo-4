@@ -5,6 +5,7 @@ import tablero.*
 import jugador.*
 import cabezal.*
 import menuPrincipal.*
+import sonidos.*
 
 //Todos los manager
 import managers.managerZombies.ManagerZobies
@@ -20,14 +21,16 @@ object juego {
         game.height(6) // 5 filas de pasto + 1 de panel
         game.width(9)
         game.cellSize(100)
-        self.cambiar(menuPrincipal)
+        // se espera a que el juego arranque (game.start()): antes de eso Wollok no deja reproducir sonidos
+        game.schedule(1, { self.cambiar(menuPrincipal) })
     }
 
-    // Cada pantalla (menuPrincipal, pantallaNombre, partida, victoria, derrota) entiende mostrar().
-    // El juego no pregunta cuál es: limpia todo y le dice que se muestre (polimorfismo).
+    // Cada pantalla (menuPrincipal, pantallaNombre, partida, victoria, derrota) entiende mostrar() y sonar().
+    // El juego no pregunta cuál es: limpia todo y le dice que se muestre y que suene (polimorfismo).
     method cambiar(pantalla) {
         game.clear()
         pantalla.mostrar()
+        pantalla.sonar()
     }
 
     // se llama desde adentro de un tick: se espera a que ese tick termine antes de limpiar todo
@@ -52,6 +55,10 @@ object partida {
         self.programarTicks()
     }
 
+    method sonar() {
+        musica.poner("musicaPartida.mp3")
+    }
+
     method crearManagers() {
         managerProyectiles = new ManagerProyectiles()
         managerZombies = new ManagerZobies()
@@ -71,7 +78,6 @@ object partida {
         managerPlantas.agregarEntidad(lanzaguisante1)
         managerPlantas.agregarEntidad(girasol1)
         managerPlantas.agregarEntidad(nuez1)
-        game.onTick(5000, "generarSol", {girasol1.generarSol()})
 
         game.addVisual(lanzaguisante1)
         game.addVisual(zombie1)

@@ -2,6 +2,7 @@ import wollok.game.*
 import juego.*
 import jugador.*
 import tablero.*
+import sonidos.*
 
 // Todas las pantallas entienden mostrar(): el juego las trata a todas igual (polimorfismo)
 
@@ -11,7 +12,11 @@ object menuPrincipal {
 
     method mostrar() {
         game.addVisual(self)
-        keyboard.enter().onPressDo({ self.jugar() }) // aca con la tecla enter pasamos a la pantalla donde seteamos nuestro nombre 
+        keyboard.enter().onPressDo({ self.jugar() }) // aca con la tecla enter pasamos a la pantalla donde seteamos nuestro nombre
+    }
+
+    method sonar() {
+        musica.poner("menuPrincipal.mp3")
     }
 
     // con Enter pasamos a pedir el nombre y de ahí al juego
@@ -49,6 +54,11 @@ object pantallaNombre {
         game.errorReporter(cartelNombre)
     }
 
+    // la misma música que el menú: como ya está sonando, sigue sin cortarse
+    method sonar() {
+        musica.poner("menuPrincipal.mp3")
+    }
+
     method confirmar() {
         jugador.validarNombre()
         juego.cambiar(partida)
@@ -58,6 +68,7 @@ object pantallaNombre {
 class PantallaFinal {
     const titulo
     const colorTitulo
+    const sonido
 
     method mostrar() {
         tablero.cubrirDePasto()
@@ -67,8 +78,14 @@ class PantallaFinal {
         game.addVisual(new Cartel(position = game.at(4, 2), text = "ENTER para volver al menú"))
         keyboard.enter().onPressDo({ juego.cambiar(menuPrincipal) })
     }
+
+    // se corta la música de la partida y suena una sola vez el sonido de ganar o perder
+    method sonar() {
+        musica.parar()
+        efectos.reproducir(sonido)
+    }
 }
 
-object victoria inherits PantallaFinal(titulo = "Ganaste", colorTitulo = "FFFF00FF") {}
+object victoria inherits PantallaFinal(titulo = "Ganaste", colorTitulo = "FFFF00FF", sonido = "victoria.mp3") {}
 
-object derrota inherits PantallaFinal(titulo = "Perdiste", colorTitulo = "FF4040FF") {}
+object derrota inherits PantallaFinal(titulo = "Perdiste", colorTitulo = "FF4040FF", sonido = "derrota.mp3") {}

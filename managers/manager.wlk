@@ -25,7 +25,7 @@ class Manager {
     self.sacarVisual(entidad)
     self.sacarEntidad(entidad)
   }
-  //Colsiones
+  //Colisiones
   method listaDeColisiones(entidad){
         return game.colliders(entidad)
     }

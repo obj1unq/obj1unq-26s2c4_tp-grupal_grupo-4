@@ -2,6 +2,7 @@ import proyectiles.*
 import entidades.entidad.*
 import wollok.game.*
 import extras.*
+import sonidos.*
 
 
 
@@ -19,7 +20,7 @@ class Planta inherits Mob{
         contadorDeTicks += 1
         if (contadorDeTicks >= ticksPorAccion){
             contadorDeTicks = 0
-            return true
+            return true  // revisar, esta mezclando orden con consulta
         } else {
             return false
         }
@@ -35,25 +36,27 @@ class LanzaGuisante inherits Planta (image = "lanzaguisantes.png", costoEnSoles 
      
 
     override method accionar(manager){
-        
+        self.disparar(manager)
+    }
+
+    // todas las que disparan (lanzaguisante, hielaguisante, repetidora) pasan por acá, así el sonido está en un solo lugar
+    method disparar(manager){
+        efectos.reproducir("disparo.mp3")
         manager.debeDisparar(new Proyectil(position = self.position()))
     }
 
 }
 
 class HielaGuisante inherits LanzaGuisante(image = "hieloguisante.png", costoEnSoles = 150, vida = 5, tipo = "Planta"){
-    override method accionar(manager){
-        manager.debeDisparar(new Proyectil(position = self.position()))
-        //se creara un proyectil de hielo eventualmente
-    }
+    // por ahora dispara igual que el lanzaguisante (hereda accionar)
+    //se creara un proyectil de hielo eventualmente
 }
 
 class Repetidora inherits LanzaGuisante(image = "repetidora.png", costoEnSoles = 200, vida = 5, tipo = "Planta"){
-     
+
     override method accionar(manager){
-        
-        manager.debeDisparar(new Proyectil(position = self.position()))
-        manager.debeDisparar(new Proyectil(position = self.position()))
+        self.disparar(manager)
+        self.disparar(manager)
     }
     //podriamos crear un nuevo  proyectil que haga mas daño en vez de que dispare 2 proyectiles
 }
@@ -64,6 +67,7 @@ class Girasol inherits Planta(image = "girasol.png", costoEnSoles = 50, vida = 5
     method generarSol() {
         const sol = new Sol(position = self.position())
         sol.aparecer()
+        efectos.reproducir("solGenerado.mp3")
     }
 
     override method accionar(manager){

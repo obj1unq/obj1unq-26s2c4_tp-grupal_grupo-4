@@ -1,4 +1,5 @@
 import entidades.entidad.*
+import sonidos.*
 class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10){
   var property velocidad = 1
   var property contadorDeTicks = 0
@@ -24,11 +25,12 @@ class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10){
    }
    
   method atacar(planta) {
-      console.println("zombie ataca, vida planta: " + planta.vida())
+      efectos.reproducir("zombiesComiendo.mp3")
       planta.recibirDaño(self.daño())
   }
 
   method colcionConProyectil(proyectil){
+    efectos.reproducir("impacto.mp3")
     vida -= 10
   }
 
