@@ -7,7 +7,8 @@ class ManagerProyectiles inherits Manager{
     override method hacerPorCadaEntidad(proyectil){
         if(self.colicionoConZombie(proyectil)){
             const zombieColicionado = self.listaZombiesColisionados(proyectil).first()
-            zombieColicionado.colcionConProyectil(proyectil)
+            proyectil.aplicarEfecto(zombieColicionado)
+            //zombieColicionado.colcionConProyectil(proyectil)
             self.sacarDelManager(proyectil)
   
         }
