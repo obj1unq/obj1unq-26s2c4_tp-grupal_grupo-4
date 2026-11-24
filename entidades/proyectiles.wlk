@@ -26,8 +26,5 @@ class ProyectilHelado inherits Proyectil(image = "proyectil.png") {
         super(zombie)
         zombie.ralentizar() // Aplica el efecto de hielo 
         } }
-class ProyectilFuego inherits Proyectil(image = "proyectilHelado.png") { 
-    override method aplicarEfecto(zombie) { 
-        super(zombie) // Aplica el daño normal (10) 
-        zombie.ralentizar() // Aplica el efecto de hielo 
-        } }
+
+//1 devolveme todas las impresoras ocupadas [].filter({impresora => impresara.estaLibre()})

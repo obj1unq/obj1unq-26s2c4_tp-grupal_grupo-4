@@ -69,13 +69,14 @@ class PantallaFinal {
     const titulo
     const colorTitulo
     const sonido
-
+    
     method mostrar() {
         tablero.cubrirDePasto()
         game.addVisual(new Cartel(position = game.at(4, 3),
                                   text = titulo + ", " + jugador.nombre() + "!",
                                   textColor = colorTitulo))
         game.addVisual(new Cartel(position = game.at(4, 2), text = "ENTER para volver al menú"))
+        game.addVisual(new Cartel(position = game.at(4, 5), text = "zombies matados " + partida.zombiesMatados()))
         keyboard.enter().onPressDo({ juego.cambiar(menuPrincipal) })
     }
 

@@ -58,7 +58,7 @@ object partida {
     method sonar() {
         musica.poner("musicaPartida.mp3")
     }
-
+    method zombiesMatados() =  managerZombies.zombiesMatados()
     method crearManagers() {
         managerProyectiles = new ManagerProyectiles()
         managerZombies = new ManagerZobies()

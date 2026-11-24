@@ -34,6 +34,7 @@ class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10, positi
     vida -= proyectil.daño()
     proyectil.aplicarEfecto(self)
   }
+  
   method ralentizar(){
     game.say(self, "Hace Frio")
     self.retroceder()
