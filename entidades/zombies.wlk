@@ -1,10 +1,10 @@
 import entidades.entidad.*
 import sonidos.*
-class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10){
+class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10, position = game.at(0,0)){
   var property velocidad = 1
   var property contadorDeTicks = 0
-  var property daño 
-
+  var property daño = 10
+  
   
   method debeMover(){
     contadorDeTicks += 1
@@ -31,8 +31,24 @@ class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10){
 
   method colcionConProyectil(proyectil){
     efectos.reproducir("impacto.mp3")
-    vida -= 10
+    vida -= proyectil.daño()
+    proyectil.aplicarEfecto(self)
   }
+  method ralentizar(){
+    game.say(self, "Hace Frio")
+    self.retroceder()
+  }
+  method retroceder(){
+    if (position.x() > 0) { 
+      position = position.right(1) 
+      } 
+  }
+  method llegoALaCasa() = position.x() == 0
+}
+class ZombieCono inherits Zombie(image = "zombie_cono.png", vida = 20, velocidad = 3) { // Hereda todo el comportamiento de Zombie sin duplicar código 
+  //override method image() ="zombie_cono.png"
+}
 
-
-}   
+class ZombieCubo inherits Zombie(image = "zombie_cubo.png", vida = 30, velocidad = 3) { // Hereda todo el comportamiento de Zombie sin duplicar código 
+  //override method image() ="zombie_cubo.png"
+}

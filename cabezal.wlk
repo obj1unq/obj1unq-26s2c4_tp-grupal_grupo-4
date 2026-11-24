@@ -1,14 +1,12 @@
+import entidades.entidad.*
 import wollok.game.*
 import tablero.*
 import jugador.*
 import cartas.*
 import juego.*
 
-object cabezal {
-    var property position = game.at(0, 0)
+object cabezal inherits Entidad(position = game.at(0, 0), tipo="Cabezal", image="cabezal.png"){
 
-    method tipo(){}
-    method image() = "cabezal.png"
 
     // MOVIMIENTO: solo dentro del pasto, nunca sobre el panel
     method moverA(destino) {

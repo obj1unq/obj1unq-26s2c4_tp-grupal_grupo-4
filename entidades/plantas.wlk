@@ -34,7 +34,9 @@ class Planta inherits Mob{
 
 class LanzaGuisante inherits Planta (image = "lanzaguisantes.png", costoEnSoles = 100, vida = 5, tipo = "Planta"){
      
-
+    method proyectilAUsar(){
+        return new Proyectil(position = self.position())
+    }
     override method accionar(manager){
         self.disparar(manager)
     }
@@ -42,7 +44,7 @@ class LanzaGuisante inherits Planta (image = "lanzaguisantes.png", costoEnSoles 
     // todas las que disparan (lanzaguisante, hielaguisante, repetidora) pasan por acá, así el sonido está en un solo lugar
     method disparar(manager){
         efectos.reproducir("disparo.mp3")
-        manager.debeDisparar(new Proyectil(position = self.position()))
+        manager.debeDisparar(self.proyectilAUsar())
     }
 
 }
@@ -50,6 +52,9 @@ class LanzaGuisante inherits Planta (image = "lanzaguisantes.png", costoEnSoles 
 class HielaGuisante inherits LanzaGuisante(image = "hieloguisante.png", costoEnSoles = 150, vida = 5, tipo = "Planta"){
     // por ahora dispara igual que el lanzaguisante (hereda accionar)
     //se creara un proyectil de hielo eventualmente
+    override method proyectilAUsar() {
+      return new ProyectilHelado(position = self.position())
+    }
 }
 
 class Repetidora inherits LanzaGuisante(image = "repetidora.png", costoEnSoles = 200, vida = 5, tipo = "Planta"){

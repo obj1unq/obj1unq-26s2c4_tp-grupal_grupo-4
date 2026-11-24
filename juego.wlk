@@ -72,15 +72,15 @@ object partida {
         const girasol1 = new Girasol (position = game.at(0,2))
         const lanzaguisante1 = new LanzaGuisante (position = game.at(1  ,2))
 
-        const zombie1 = new Zombie(position = game.at(8,3), velocidad= 1, daño = 10)
-        oleada.agregarCantidadEntidad(3, {i=> new Zombie(position = game.at(1,0), velocidad = i+3, daño = 10)})
-        managerZombies.agregarEntidad(zombie1)
+        //const zombie1 = new Zombie(position = game.at(8,3), velocidad= 1, daño = 10)
+        //oleada.agregarCantidadEntidad(3, {i=> new Zombie(position = game.at(1,0), velocidad = i+3, daño = 10)})
+        //managerZombies.agregarEntidad(zombie1)
         managerPlantas.agregarEntidad(lanzaguisante1)
         managerPlantas.agregarEntidad(girasol1)
         managerPlantas.agregarEntidad(nuez1)
 
         game.addVisual(lanzaguisante1)
-        game.addVisual(zombie1)
+        //game.addVisual(zombie1)
         game.addVisual(girasol1)
         game.addVisual(nuez1)
     }
@@ -88,7 +88,7 @@ object partida {
     method programarTicks() {
         game.onTick(500, "tickProyectil", {managerProyectiles.tick()})
         game.onTick(5000,"Generar Zombie", {oleada.tick()})
-        game.onTick(1500, "tickZombie", {managerZombies.tick()})
+        game.onTick(2000, "tickZombie", {managerZombies.tick()})
         game.onTick(1000, "tickPlantas", {managerPlantas.tick()})
         // por ahora los soles suben solos
         game.onTick(3000, "solesAutomaticos", {managerDeSoles.tick()})
@@ -99,13 +99,11 @@ object partida {
     // FIN DEL JUEGO: la partida pregunta, los managers no necesitan conocerla
     method perdioElJugador() = managerZombies.algunZombieLlegoALaCasa()
 
-    method ganoElJugador() = not oleada.hayEntidades() and not managerZombies.hayEntidades()
+    //method ganoElJugador() = not oleada.hayEntidades() and not managerZombies.hayEntidades()
 
     method chequearFinDelJuego() {
         if (self.perdioElJugador()) {
             juego.terminar(derrota)
-        } else if (self.ganoElJugador()) {
-            juego.terminar(victoria)
         }
     }
 }

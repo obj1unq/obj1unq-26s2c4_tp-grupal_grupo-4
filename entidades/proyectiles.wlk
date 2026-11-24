@@ -2,7 +2,7 @@ import entidades.entidad.*
 
 
 class Proyectil inherits Entidad(image = "proyectil.png", tipo = "Proyectil") {
-
+    var property daño = 10
 
     
     method colsionaConZombie(entidad) {
@@ -15,5 +15,19 @@ class Proyectil inherits Entidad(image = "proyectil.png", tipo = "Proyectil") {
     method mover() {
         position = position.right(1)
         }
+    method aplicarEfecto(zombie) { 
+        zombie.recibirDaño(daño)
+    } 
     
 }
+
+class ProyectilHelado inherits Proyectil(image = "proyectil.png") { 
+    override method aplicarEfecto(zombie) { 
+        super(zombie)
+        zombie.ralentizar() // Aplica el efecto de hielo 
+        } }
+class ProyectilFuego inherits Proyectil(image = "proyectilHelado.png") { 
+    override method aplicarEfecto(zombie) { 
+        super(zombie) // Aplica el daño normal (10) 
+        zombie.ralentizar() // Aplica el efecto de hielo 
+        } }
