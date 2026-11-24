@@ -2,7 +2,7 @@ import managers.manager.*
 
 
 class ManagerZobies inherits Manager {
-  
+  var property zombiesMatados = 0
   override method hacerPorCadaEntidad(zombie) {
     //self.checkearColision(entidad)
     if(zombie.puedeMover() and not zombie.tieneQueMorir() and not self.colisionoConPlanta(zombie)){ 
@@ -11,6 +11,7 @@ class ManagerZobies inherits Manager {
         if(self.colisionoConPlanta(zombie)){
           self.colisionConPlanta(zombie)
         }else{ 
+          zombiesMatados += 1
           self.sacarDelManager(zombie)}
       }
     
