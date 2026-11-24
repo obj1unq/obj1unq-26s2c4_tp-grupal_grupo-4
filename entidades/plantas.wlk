@@ -35,10 +35,12 @@ class Planta inherits Mob{
 class LanzaGuisante inherits Planta (image = "lanzaguisantes.png", costoEnSoles = 100, vida = 5, tipo = "Planta"){
      
     method proyectilAUsar(){
-        return new Proyectil(position = self.position())
+        return new Proyectil(position = self.position(), daño = 8)
     }
     override method accionar(manager){
-        self.disparar(manager)
+        if(manager.hayZombiesEnFila(position.y())){ 
+            self.disparar(manager)
+        }
     }
 
     // todas las que disparan (lanzaguisante, hielaguisante, repetidora) pasan por acá, así el sonido está en un solo lugar
@@ -53,20 +55,20 @@ class HielaGuisante inherits LanzaGuisante(image = "hieloguisante.png", costoEnS
     // por ahora dispara igual que el lanzaguisante (hereda accionar)
     //se creara un proyectil de hielo eventualmente
     override method proyectilAUsar() {
-      return new ProyectilHelado(position = self.position())
+      return new ProyectilHelado(position = self.position(), daño = 5)
     }
 }
 
 class Repetidora inherits LanzaGuisante(image = "repetidora.png", costoEnSoles = 200, vida = 5, tipo = "Planta"){
 
-    override method accionar(manager){
+    /*override method accionar(manager){
         self.disparar(manager)
         self.disparar(manager)
-    }
+    }*/
     //podriamos crear un nuevo  proyectil que haga mas daño en vez de que dispare 2 proyectiles
 }
 
-class Girasol inherits Planta(image = "girasol.png", costoEnSoles = 50, vida = 5, tipo = "Planta" ){
+class Girasol inherits Planta(image = "girasol.png", costoEnSoles = 50, vida = 5, tipo = "Planta", ticksPorAccion= 20){
 
 
     method generarSol() {
@@ -80,7 +82,7 @@ class Girasol inherits Planta(image = "girasol.png", costoEnSoles = 50, vida = 5
     }
 }
 
-class Nuez inherits Planta (image = "nuez.png", costoEnSoles = 100, vida = 10, tipo = "Planta"){
+class Nuez inherits Planta (image = "nuez.png", costoEnSoles = 100, vida = 250, tipo = "Planta"){
 
 }
 

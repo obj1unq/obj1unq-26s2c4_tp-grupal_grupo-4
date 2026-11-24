@@ -2,7 +2,7 @@ import managers.manager.Manager
 import extras.Sol
 import random.generadorDeNumeros
 class ManagerDeSoles inherits Manager{
-    var tickProximoSol = (1 .. 3).anyOne()
+    var tickProximoSol = (1 .. 2).anyOne()
     method posicionAleatoria() { 
         const x = (0 .. game.width() - 1).anyOne()
         const y = (0 .. game.height() - 2).anyOne() 
@@ -10,7 +10,7 @@ class ManagerDeSoles inherits Manager{
         
     method generarSolAleatorio() { 
         if(tickProximoSol==0){ 
-            tickProximoSol = (1 .. 3).anyOne()
+            tickProximoSol = (20 .. 40).anyOne()
             const nuevoSol = new Sol(position = self.posicionAleatoria()) 
             self.agregarEntidad(nuevoSol) 
             game.addVisual(nuevoSol)

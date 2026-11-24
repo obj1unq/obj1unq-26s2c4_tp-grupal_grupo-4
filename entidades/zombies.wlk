@@ -1,7 +1,7 @@
 import entidades.entidad.*
 import sonidos.*
 class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10, position = game.at(0,0)){
-  var property velocidad = 1
+  var property velocidad = 10
   var property contadorDeTicks = 0
   var property daño = 10
   
@@ -46,10 +46,10 @@ class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10, positi
   }
   method llegoALaCasa() = position.x() == 0
 }
-class ZombieCono inherits Zombie(image = "zombie_cono.png", vida = 20, velocidad = 3) { // Hereda todo el comportamiento de Zombie sin duplicar código 
+class ZombieCono inherits Zombie(image = "zombie_cono.png", vida = 20, velocidad = 10) { // Hereda todo el comportamiento de Zombie sin duplicar código 
   //override method image() ="zombie_cono.png"
 }
 
-class ZombieCubo inherits Zombie(image = "zombie_cubo.png", vida = 30, velocidad = 3) { // Hereda todo el comportamiento de Zombie sin duplicar código 
+class ZombieCubo inherits Zombie(image = "zombie_cubo.png", vida = 30, velocidad = 10) { // Hereda todo el comportamiento de Zombie sin duplicar código 
   //override method image() ="zombie_cubo.png"
 }

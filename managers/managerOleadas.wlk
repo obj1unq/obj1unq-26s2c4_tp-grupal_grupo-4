@@ -45,7 +45,7 @@ method generarNuevaOleada() {
        // Si la cola está vacía, genera una nueva oleada tras un descanso 
        if (ticksDeEsperaEntreOleadas == 0) { 
           self.generarNuevaOleada() 
-          ticksDeEsperaEntreOleadas = (4 .. 8).anyOne() // Pausa entre hordas 
+          ticksDeEsperaEntreOleadas = (50 .. 100).anyOne() // Pausa entre hordas 
           } else { ticksDeEsperaEntreOleadas -= 1 } } 
             else {
                // Mientras haya zombies en cola, libera uno al mapa 
