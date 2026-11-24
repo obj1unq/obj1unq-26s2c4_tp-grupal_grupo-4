@@ -45,12 +45,22 @@ object partida {
     var property managerPlantas = null
     var property oleada = null
     var property managerDeSoles = null
+    method tick() { 
+        oleada.tick() // 1\. La oleada revisa si debe spawnear/desencolar un zombie 
+        managerPlantas.tick() // 2\. Las plantas evalúan si disparan 
+        managerProyectiles.tick() // 3\. Los proyectiles avanzan e impactan 
+        managerZombies.tick() // 4\. Los zombies caminan o atacan 
+        managerDeSoles.tick()
+        self.chequearFinDelJuego()// 5\. Se verifica si un zombie llegó a x == 0 
+         }
+
+
     method mostrar() {
         jugador.reiniciarSoles()
         // primero hay que dibujar el tablero para que no pise a las plantas y a los zombies visualmente
         tablero.dibujarTablero()
         self.crearManagers()
-        self.agregarEntidadesIniciales()
+        //self.agregarEntidadesIniciales()
         cabezal.configurar()
         self.programarTicks()
     }
@@ -67,7 +77,7 @@ object partida {
         managerDeSoles = new ManagerDeSoles()
     }
 
-    method agregarEntidadesIniciales() {
+    /*method agregarEntidadesIniciales() {
         const nuez1 = new Nuez (position = game.at(7,3))
         const girasol1 = new Girasol (position = game.at(0,2))
         const lanzaguisante1 = new LanzaGuisante (position = game.at(1  ,2))
@@ -83,17 +93,11 @@ object partida {
         //game.addVisual(zombie1)
         game.addVisual(girasol1)
         game.addVisual(nuez1)
-    }
+    }*/
 
     method programarTicks() {
-        game.onTick(500, "tickProyectil", {managerProyectiles.tick()})
-        game.onTick(5000,"Generar Zombie", {oleada.tick()})
-        game.onTick(2000, "tickZombie", {managerZombies.tick()})
-        game.onTick(1000, "tickPlantas", {managerPlantas.tick()})
-        // por ahora los soles suben solos
-        game.onTick(3000, "solesAutomaticos", {managerDeSoles.tick()})
-        // cada 1000 ms: más seguido que el tick de zombies (1500 ms), así no se escapa uno que llegó a la casa
-        game.onTick(1000, "chequearFinDelJuego", {self.chequearFinDelJuego()})
+        game.onTick(250 , "mastertick", {self.tick()})
+        
     }
 
     // FIN DEL JUEGO: la partida pregunta, los managers no necesitan conocerla

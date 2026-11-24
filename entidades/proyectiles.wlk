@@ -27,4 +27,6 @@ class ProyectilHelado inherits Proyectil(image = "proyectil.png") {
         zombie.ralentizar() // Aplica el efecto de hielo 
         } }
 
-//1 devolveme todas las impresoras ocupadas [].filter({impresora => impresara.estaLibre()})
+
+class ProyectilRojo inherits Proyectil(image = "proyectil.png", daño = 30) { }
+    

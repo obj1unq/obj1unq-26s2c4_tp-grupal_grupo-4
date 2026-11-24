@@ -34,7 +34,7 @@ class ManagerZobies inherits Manager {
     //self.hayEntidades()
     
   }
-
+  method cantidadDeZombiesEnLaFila(numeroDeFila) = Entidades.count({ zombie => zombie.position().y() == numeroDeFila })
   method zombiesEn(celdas) =
     Entidades.filter({ zombie => celdas.contains(zombie.position()) })
 

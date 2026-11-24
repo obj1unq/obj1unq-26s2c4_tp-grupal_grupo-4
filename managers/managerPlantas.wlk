@@ -41,7 +41,7 @@ class ManagerPlantas inherits Manager{
         game.addVisual(planta)
     }
 
-
+    method hayZombiesEnFila(numeroDeFila) = managerDeZombies.cantidadDeZombiesEnLaFila(numeroDeFila) > 0
     method AccionarEn(celdas, daño){
         managerDeZombies.zombiesEn(celdas).forEach({ zombie => zombie.recibirDaño(daño) })
     }
