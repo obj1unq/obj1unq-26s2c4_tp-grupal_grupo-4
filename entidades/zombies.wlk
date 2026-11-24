@@ -16,7 +16,7 @@ class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10, positi
   }
 
   method puedeMover() {
-    return (not (position.x() == 0))
+    return (not (position.x() == -1))
   }
   method moverZombie() {
    if (self.puedeMover() and self.debeMover()) { 
@@ -44,7 +44,7 @@ class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10, positi
       position = position.right(1) 
       } 
   }
-  method llegoALaCasa() = position.x() == 0
+  method llegoALaCasa() = position.x() == -1
 }
 class ZombieCono inherits Zombie(image = "zombie_cono.png", vida = 20, velocidad = 10) { // Hereda todo el comportamiento de Zombie sin duplicar código 
   //override method image() ="zombie_cono.png"

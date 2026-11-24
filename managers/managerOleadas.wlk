@@ -5,16 +5,30 @@ import entidades.zombies.*
 class Oleadas inherits Manager {
   var property managerZombies = null
   var ticksDeEsperaEntreOleadas = 0
- 
+  var property numeroDeOleada = 0
+
+  method tiposDisponiblesSegunOleada() { 
+    if (numeroDeOleada <= 2) return [{ pos => new Zombie(position = pos) }] 
+    if (numeroDeOleada <= 4) return [{ pos => new Zombie(position = pos) }, { pos => new ZombieCono(position = pos) }] 
+    return [{ pos => new Zombie(position = pos) }, { pos => new ZombieCono(position = pos) }, { pos => new ZombieCubo(position = pos) }] }
+
+
    method crearZombieAleatorio() { 
-    const nuevaFila = (0 .. 4).anyOne() 
-    const tipoDeZombie = [new Zombie(), new ZombieCono(), new ZombieCubo()].anyOne() 
-    tipoDeZombie.position(game.at(8, nuevaFila)) 
-    return tipoDeZombie 
+    const pos = game.at(8, (0 .. 4).anyOne()) 
+    return self.tiposDisponiblesSegunOleada().anyOne().apply(pos) 
   }
+
 method generarNuevaOleada() {
-    const cantidadZombies = (3 .. 6).anyOne() // Genera entre 3 y 6 zombies por tanda 
-    cantidadZombies.times({ i => self.agregarEntidad(self.crearZombieAleatorio()) }) 
+  numeroDeOleada += 1 
+  if (numeroDeOleada % 5 == 0) { 
+    game.say(self, "¡SE ACERCA UNA GRAN HORDA!") 
+    }
+    const minZombies = numeroDeOleada 
+    const maxZombies = numeroDeOleada * 2
+
+    const cantidadBase = (minZombies .. maxZombies).anyOne()
+    const cantidadFinal = if (numeroDeOleada % 5 == 0) { cantidadBase * 2 } else { cantidadBase }
+     cantidadFinal.times({ i => self.agregarEntidad(self.crearZombieAleatorio()) })
   }
 
 

@@ -32,10 +32,10 @@ class Planta inherits Mob{
 }
 
 
-class LanzaGuisante inherits Planta (image = "lanzaguisantes.png", costoEnSoles = 100, vida = 5, tipo = "Planta"){
+class LanzaGuisante inherits Planta (image = "lanzaguisantes.png", costoEnSoles = 100, vida = 5, tipo = "Planta", ticksPorAccion = 10){
      
     method proyectilAUsar(){
-        return new Proyectil(position = self.position(), daño = 8)
+        return new Proyectil(position = self.position(), daño = 5)
     }
     override method accionar(manager){
         if(manager.hayZombiesEnFila(position.y())){ 
