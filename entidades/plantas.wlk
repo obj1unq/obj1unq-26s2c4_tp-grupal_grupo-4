@@ -61,11 +61,10 @@ class HielaGuisante inherits LanzaGuisante(image = "hieloguisante.png", costoEnS
 
 class Repetidora inherits LanzaGuisante(image = "repetidora.png", costoEnSoles = 200, vida = 5, tipo = "Planta"){
 
-    /*override method accionar(manager){
-        self.disparar(manager)
-        self.disparar(manager)
-    }*/
-    //podriamos crear un nuevo  proyectil que haga mas daño en vez de que dispare 2 proyectiles
+    override method proyectilAUsar() {
+      return new ProyectilRojo(position = self.position())
+    }
+
 }
 
 class Girasol inherits Planta(image = "girasol.png", costoEnSoles = 50, vida = 5, tipo = "Planta", ticksPorAccion= 20){
