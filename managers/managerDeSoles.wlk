@@ -1,30 +1,29 @@
-import managers.manager.Manager
 import extras.Sol
-import random.generadorDeNumeros
-class ManagerDeSoles inherits Manager{
-    var tickProximoSol = (1 .. 2).anyOne()
-    method posicionAleatoria() { 
-        const x = (0 .. game.width() - 1).anyOne()
-        const y = (0 .. game.height() - 2).anyOne() 
-        return game.at(x, y) }
-        
-    method generarSolAleatorio() { 
-        if(tickProximoSol==0){ 
-            tickProximoSol = (10 .. 40).anyOne()
-            const nuevoSol = new Sol(position = self.posicionAleatoria()) 
-            self.agregarEntidad(nuevoSol) 
-            game.addVisual(nuevoSol)
+import tablero.*
+import random.*
 
-        }else{
-            tickProximoSol -= 1
+// Tira soles en lugares al azar cada tanto. Cada sol se va solo si nadie lo junta (Sol.aparecer),
+// así que no hace falta guardarlos: por eso no hereda de Manager, no tiene ninguna colección.
+class ManagerDeSoles {
+    const azar = generadorDeNumeros // en los tests se puede reemplazar por un dado cargado
+    const ticksMinimosEntreSoles = 10
+    const ticksMaximosEntreSoles = 40
+    var ticksParaElProximoSol = 2
+
+    method tick() {
+        if (ticksParaElProximoSol == 0) {
+            self.tirarSol()
+        } else {
+            ticksParaElProximoSol -= 1
         }
-        
     }
 
-    override method hacerPorTick(){
-        self.generarSolAleatorio()
+    method tirarSol() {
+        new Sol(position = self.posicionAleatoria()).aparecer()
+        ticksParaElProximoSol = azar.numeroEntre(ticksMinimosEntreSoles, ticksMaximosEntreSoles)
     }
 
-    override method hacerPorCadaEntidad(entidad){}
-
+    // cualquier celda de pasto
+    method posicionAleatoria() = game.at(azar.numeroEntre(0, game.width() - 1),
+                                         azar.numeroEntre(0, tablero.filaDelPanel() - 1))
 }

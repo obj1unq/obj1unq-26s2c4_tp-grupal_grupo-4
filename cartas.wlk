@@ -9,10 +9,9 @@ class Carta {
     const property tecla
     const property image
 
-    // cada carta se ubica en la columna de su tecla: la carta 2 en la columna 2
+    // cada carta se ubica en la columna de su tecla: la carta 2 en la columna 2.
+    // El número de la tecla ya viene dibujado en la imagen de cada carta
     method position() = game.at(tecla, tablero.filaDelPanel())
-    method text() = tecla.toString()
-    method textColor() = "FFFFFFFF"
 
     // el cabezal no pregunta qué carta es: le pide esto a cualquiera (polimorfismo)
     method crearPlantaEn(posicion)
@@ -52,6 +51,6 @@ object cartaHielaGuisante inherits Carta(tecla = 8, image = "cartaHielaguisante.
 }
 
 object cartas {
-    // para la preentrega solo el lanzaguisante. Para habilitar otra, agregarla a la lista.
+    // las cartas que aparecen en el panel. Para agregar una planta nueva alcanza con sumar su carta acá
     method disponibles() = [cartaLanzaguisante, cartaGirasol, cartaNuez, cartaPetaCereza, cartaPatapum, cartaRepetidora, cartaPlantaCarnivora, cartaHielaGuisante]
 }

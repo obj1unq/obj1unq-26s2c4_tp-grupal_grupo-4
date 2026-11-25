@@ -7,15 +7,3 @@ program PvzGame {
   juego.configurar()
   game.start()
 }
-
-
-/*
-Queremos
-
--zombies funcional
--proyectil funciol
--lanzaguizantes funcional
--cabezal
--poder poner lanzaguizantes
-
-*/

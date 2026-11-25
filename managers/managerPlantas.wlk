@@ -1,32 +1,26 @@
 import managers.manager.*
 
-class ManagerPlantas inherits Manager{
-    const property managerDeProyectiles 
-    const property managerDeZombies // para que funcione PetaCereza, Patapum y PlantaCarnivora
+class ManagerPlantas inherits Manager {
+    const managerDeProyectiles
+    const managerDeZombies // para saber si hay zombies a tiro y para la carnívora y las explosivas
 
-    //const property managerDeSoles 
-
-    override method hacerPorCadaEntidad(planta){
-        if (planta.tieneQueMorir()){
+    // primero se fija si está muerta; si no, le avisa que pasó un tick y la planta decide si le toca actuar
+    override method hacerPorCadaEntidad(planta) {
+        if (planta.tieneQueMorir()) {
             self.sacarDelManager(planta)
-        } else if (planta.debeActuar()){
-            planta.accionar(self)
+        } else {
+            planta.pasarTick(self)
         }
     }
 
-    override method hacerPorTick() {
-
-    }
-
-    //
-    method debeDisparar(proyectil){
+    method lanzar(proyectil) {
         managerDeProyectiles.agregarEntidad(proyectil)
-        // Mirar Despues, el manager de plantas pone la visual del proyectil
     }
-    // consultas sobre la colección: las responde el dueño de la colección
-    method hayPlantaEn(posicion) = Entidades.any({ planta => planta.position() == posicion })
 
-    method plantaEn(posicion) = Entidades.findOrElse({ planta => planta.position() == posicion },
+    // consultas sobre la colección: las responde el dueño de la colección
+    method hayPlantaEn(posicion) = entidades.any({ planta => planta.position() == posicion })
+
+    method plantaEn(posicion) = entidades.findOrElse({ planta => planta.position() == posicion },
                                                      { self.error("No hay ninguna planta acá") })
 
     method validarCeldaLibre(posicion) {
@@ -41,9 +35,12 @@ class ManagerPlantas inherits Manager{
         game.addVisual(planta)
     }
 
-    method hayZombiesEnFila(numeroDeFila) = managerDeZombies.cantidadDeZombiesEnLaFila(numeroDeFila) > 0
-    method AccionarEn(celdas, daño){
-        managerDeZombies.zombiesEn(celdas).forEach({ zombie => zombie.recibirDaño(daño) })
-    }
+    // lo que las plantas necesitan saber de los zombies se lo piden a su manager, que se lo pregunta al de zombies
+    method hayZombiesEnFila(numeroDeFila) = managerDeZombies.hayZombiesEnFila(numeroDeFila)
 
+    method zombiesEn(celdas) = managerDeZombies.zombiesEn(celdas)
+
+    method dañarZombiesEn(celdas, daño) {
+        managerDeZombies.dañarZombiesEn(celdas, daño)
+    }
 }
