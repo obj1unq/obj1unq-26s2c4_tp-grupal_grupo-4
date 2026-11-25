@@ -21,12 +21,12 @@ class Proyectil inherits Entidad(image = "proyectil.png", tipo = "Proyectil") {
     
 }
 
-class ProyectilHelado inherits Proyectil(image = "proyectil.png") { 
+class ProyectilHelado inherits Proyectil(image = "proyectilhielo.png") { 
     override method aplicarEfecto(zombie) { 
         super(zombie)
         zombie.ralentizar() // Aplica el efecto de hielo 
         } }
 
 
-class ProyectilRojo inherits Proyectil(image = "proyectil.png", daño = 30) { }
+class ProyectilRojo inherits Proyectil(image = "proyectilfuego.png", daño = 30) { }
     
