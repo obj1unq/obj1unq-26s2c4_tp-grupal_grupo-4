@@ -7,7 +7,7 @@ import sonidos.*
 import historial.*
 
 //Todos los manager
-import managers.managerZombies.ManagerZombies
+import managers.managerZombies.ManagerZobies
 import managers.managerOleadas.Oleadas
 import managers.managerProyectiles.ManagerProyectiles
 import managers.managerPlantas.ManagerPlantas
@@ -77,8 +77,8 @@ object partida {
 
     // cada manager recibe al crearse los otros managers que necesita
     method crearManagers() {
-        managerZombies = new ManagerZombies()
-        managerProyectiles = new ManagerProyectiles(managerDeZombies = managerZombies)
+        managerZombies = new ManagerZobies()
+        managerProyectiles = new ManagerProyectiles()
         managerPlantas = new ManagerPlantas(managerDeProyectiles = managerProyectiles, managerDeZombies = managerZombies)
         oleada = new Oleadas(managerZombies = managerZombies)
         managerDeSoles = new ManagerDeSoles()

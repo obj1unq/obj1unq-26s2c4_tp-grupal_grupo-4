@@ -3,9 +3,14 @@ import wollok.game.*
 import jugador.*
 import cartas.*
 
-class CeldaPasto inherits Entidad(image = "pasto.jpg") {}
+class CeldaPasto inherits Entidad(image = "pasto.jpg", tipo = "Celda") {
 
-class CeldaPanel inherits Entidad(image = "panel.png") {}
+
+}
+
+class CeldaPanel inherits Entidad(image = "panel.png", tipo = "Panel") {
+
+}
 
 object contadorSoles {
     method position() = game.at(0, tablero.filaDelPanel())

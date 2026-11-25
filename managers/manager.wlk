@@ -1,31 +1,50 @@
-// Un manager tiene una colección de entidades y les dice qué hacer en cada tick.
-// tick() es un template method: el algoritmo es siempre el mismo y cada manager completa los dos pasos (hooks).
+import random.*
 class Manager {
-  // la colección no se expone: se agregan y sacan entidades pidiéndoselo al manager
-  const entidades = []
-
+  var property Entidades = []
+  
   method agregarEntidad(entidad) {
-    entidades.add(entidad)
+    Entidades.add(entidad)
   }
-
-  method hayEntidades() = not entidades.isEmpty()
-
-  method sacarEntidad(entidad) {
-    entidades.remove(entidad)
+  //esto funciona pasandole un bloque de codigo new para generar la cantidad de entidades pedida. Ej manager.agregarCantidadEntidad(10, new Zombie(position.., ... ,))
+  method agregarCantidadEntidad(cantidad, bloque) {
+    cantidad.times({ i => Entidades.add(bloque.apply(i)) }) // .apply ejecuta el bloque de codigo que se le pase a la entidad y .time repite un bloque de código un número determinado de veces
   }
+  method hayEntidades(){
+    return not Entidades.isEmpty()
+    }
 
-  method sacarDelManager(entidad) {
+  method sacarVisual(entidad) {
     game.removeVisual(entidad)
+  }
+
+  method sacarEntidad(entidad){
+    Entidades.remove(entidad)
+  }
+
+  method sacarDelManager(entidad){
+    self.sacarVisual(entidad)
     self.sacarEntidad(entidad)
   }
+  //Colisiones
+  method listaDeColisiones(entidad){
+        return game.colliders(entidad)
+    }
 
+  method hayColiciones(entidad){
+        return not self.listaDeColisiones(entidad).isEmpty()
+    }
+  
+  //ticks
   method tick() {
     self.hacerPorTick()
-    // se recorre una copia porque en el camino se pueden sacar entidades (zombies muertos, proyectiles que pegaron)
-    entidades.copy().forEach({ entidad => self.hacerPorCadaEntidad(entidad) })
+    Entidades.copy().forEach({ entidad =>self.hacerPorCadaEntidad(entidad)})
+    //Entidades.forEach({entidad => self.hacerPorCadaEntidad(entidad)})
   }
 
-  // hooks con comportamiento por defecto: no hacer nada. Cada manager redefine solo el que necesita
-  method hacerPorTick() {}
-  method hacerPorCadaEntidad(entidad) {}
+  
+
+  method hacerPorTick()
+  method hacerPorCadaEntidad(entidad)
 }
+
+

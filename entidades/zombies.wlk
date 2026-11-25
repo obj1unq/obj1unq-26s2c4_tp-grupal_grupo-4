@@ -1,53 +1,55 @@
 import entidades.entidad.*
 import sonidos.*
-
-class Zombie inherits Mob(image = "zombie.png", vida = 10, position = game.at(0, 0)) {
-  const ticksPorPaso = 10 // cuántos ticks tarda en dar un paso: más alto, más lento
-  const daño = 10
-  var ticksDesdeElUltimoPaso = 0
-
-  // orden: pasa un tick y, si ya le toca, da un paso
-  method pasarTick() {
-    ticksDesdeElUltimoPaso += 1
-    if (self.leTocaCaminar()) {
-      self.caminar()
-    }
+class Zombie inherits Mob(image = "zombie.png", tipo="Zombie", vida = 10, position = game.at(0,0)){
+  var property velocidad = 10
+  var property contadorDeTicks = 0
+  var property daño = 10
+  
+  
+  method debeMover(){
+    contadorDeTicks += 1
+    if(contadorDeTicks >=velocidad){ 
+      contadorDeTicks = 0
+      return true
+    }else { 
+    return false}
   }
 
-  // consulta: solo pregunta, no cambia nada
-  method leTocaCaminar() = ticksDesdeElUltimoPaso >= ticksPorPaso
-
-  method caminar() {
-    position = position.left(1)
-    ticksDesdeElUltimoPaso = 0
+  method puedeMover() {
+    return (not (position.x() == -1))
   }
-
+  method moverZombie() {
+   if (self.puedeMover() and self.debeMover()) { 
+    self.position(self.position().left(1)) 
+   }
+   }
+   
   method atacar(planta) {
-    efectos.reproducir("zombiesComiendo.mp3")
-    planta.recibirDaño(daño)
+      efectos.reproducir("zombiesComiendo.mp3")
+      planta.recibirDaño(self.daño())
   }
 
-  // lo toca un proyectil: suena el impacto y el proyectil hace su efecto (daño, frío...)
-  method recibirProyectil(proyectil) {
+  method colcionConProyectil(proyectil){
     efectos.reproducir("impacto.mp3")
+    vida -= proyectil.daño()
     proyectil.aplicarEfecto(self)
   }
-
-  method ralentizar() {
-    game.say(self, "Hace frío")
+  
+  method ralentizar(){
+    game.say(self, "Hace Frio")
     self.retroceder()
   }
-
-  method retroceder() {
-    if (position.x() > 0) {
-      position = position.right(1)
-    }
+  method retroceder(){
+    if (position.x() > 0) { 
+      position = position.right(1) 
+      } 
   }
-
-  // la casa está a la izquierda del tablero
-  method llegoALaCasa() = position.x() < 0
+  method llegoALaCasa() = position.x() == -1
+}
+class ZombieCono inherits Zombie(image = "zombie_cono.png", vida = 20, velocidad = 10) { // Hereda todo el comportamiento de Zombie sin duplicar código 
+  //override method image() ="zombie_cono.png"
 }
 
-class ZombieCono inherits Zombie(image = "zombie_cono.png", vida = 20) {}
-
-class ZombieCubo inherits Zombie(image = "zombie_cubo.png", vida = 30) {}
+class ZombieCubo inherits Zombie(image = "zombie_cubo.png", vida = 30, velocidad = 10) { // Hereda todo el comportamiento de Zombie sin duplicar código 
+  //override method image() ="zombie_cubo.png"
+}

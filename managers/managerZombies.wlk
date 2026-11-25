@@ -1,45 +1,42 @@
 import managers.manager.*
-import juego.partida
 
-class ManagerZombies inherits Manager {
-  var zombiesMatados = 0
 
-  method zombiesMatados() = zombiesMatados
-
-  // el de plantas y el de zombies se necesitan entre sí: para no tener un ciclo al crearlos,
-  // este le pide el de plantas a la partida (igual que el cabezal)
-  method managerDePlantas() = partida.managerPlantas()
-
-  // primero se fija si está muerto: así un zombie muerto ya no come ni camina
+class ManagerZobies inherits Manager {
+  var property zombiesMatados = 0
   override method hacerPorCadaEntidad(zombie) {
-    if (zombie.tieneQueMorir()) {
-      self.matar(zombie)
-    } else if (self.managerDePlantas().hayPlantaEn(zombie.position())) {
-      zombie.atacar(self.managerDePlantas().plantaEn(zombie.position()))
-    } else {
-      zombie.pasarTick()
-    }
+    //self.checkearColision(entidad)
+    if(zombie.puedeMover() and not zombie.tieneQueMorir() and not self.colisionoConPlanta(zombie)){ 
+    zombie.moverZombie()
+      }else{
+        if(self.colisionoConPlanta(zombie)){
+          self.colisionConPlanta(zombie)
+        }else{ 
+          zombiesMatados += 1
+          self.sacarDelManager(zombie)}
+      }
+    
+
+  }
+  //colision con planta
+  method colisionConPlanta(zombie) {
+    const plantaColisionada = self.listaDeColisiones(zombie).filter({entidad => entidad.tipo() == "Planta"}).first()
+    zombie.atacar(plantaColisionada)
   }
 
-  // solo cuentan los que mueren: el que llega a la casa termina la partida, no suma puntos
-  method matar(zombie) {
-    zombiesMatados += 1
-    self.sacarDelManager(zombie)
+  method colisionoConPlanta(zombie){
+    return not self.listaDeColisiones(zombie).filter({entidad => entidad.tipo() == "Planta"}).isEmpty()
   }
+  // consulta para la partida: un zombie que ya no puede avanzar llegó a la casa
+  method algunZombieLlegoALaCasa() {
+    return Entidades.any({ zombie => zombie.llegoALaCasa() })}
 
-  // consultas sobre la colección: las responde el dueño de la colección
-  method algunZombieLlegoALaCasa() = entidades.any({ zombie => zombie.llegoALaCasa() })
-
-  method hayZombiesEnFila(numeroDeFila) = entidades.any({ zombie => zombie.position().y() == numeroDeFila })
-
-  method hayZombieEn(posicion) = entidades.any({ zombie => zombie.position() == posicion })
-
-  method zombieEn(posicion) = entidades.find({ zombie => zombie.position() == posicion })
-
-  method zombiesEn(celdas) = entidades.filter({ zombie => celdas.contains(zombie.position()) })
-
-  // para la planta carnívora y las explosivas
-  method dañarZombiesEn(celdas, daño) {
-    self.zombiesEn(celdas).forEach({ zombie => zombie.recibirDaño(daño) })
+  override method hacerPorTick(){
+    //self.hayEntidades()
+    
   }
+  method cantidadDeZombiesEnLaFila(numeroDeFila) = Entidades.count({ zombie => zombie.position().y() == numeroDeFila })
+  method zombiesEn(celdas) =
+    Entidades.filter({ zombie => celdas.contains(zombie.position()) })
+
+    //metodo para la clase patapum, petacereza y planta carnivora. recibe informacion de las posiciones
 }
