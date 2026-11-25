@@ -12,7 +12,9 @@ _(Git Grupal: https://docs.google.com/presentation/d/1-o5zEUfuUT72ea8q2rk8mwHSqM
 
 ## Capturas
 
-(agregar)
+![MenuPrincipal](assets/menuPrincipal.jpeg)
+![Captura](assets/miniatura.png)
+![MenuPrincipal](assets/miniatura2.png)
 
 ## Reglas de Juego / Instrucciones
 
