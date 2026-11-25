@@ -52,6 +52,6 @@ object cartaHielaGuisante inherits Carta(tecla = 8, image = "cartaHielaguisante.
 }
 
 object cartas {
-    // para la preentrega solo el lanzaguisante. Para habilitar otra, agregarla a la lista.
+    // las cartas que aparecen en el panel. Para agregar una planta nueva alcanza con sumar su carta acá
     method disponibles() = [cartaLanzaguisante, cartaGirasol, cartaNuez, cartaPetaCereza, cartaPatapum, cartaRepetidora, cartaPlantaCarnivora, cartaHielaGuisante]
 }

@@ -1,7 +1,7 @@
 object jugador {
     var nombre = ""
-    var soles = 4000
     const solesIniciales = 150
+    var soles = solesIniciales
     const largoMaximoNombre = 12
 
     // solo getters: desde afuera se consulta, pero para cambiarlos hay que pedírselo al jugador

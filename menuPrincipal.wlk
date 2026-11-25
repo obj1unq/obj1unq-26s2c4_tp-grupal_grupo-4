@@ -3,11 +3,12 @@ import juego.*
 import jugador.*
 import tablero.*
 import sonidos.*
+import historial.*
 
 // Todas las pantallas entienden mostrar(): el juego las trata a todas igual (polimorfismo)
 
 object menuPrincipal {
-    const property image = "menuPrincipal.png"
+    const property image = "menuPrincipal.jpeg"
     const property position = game.at(0,0)
 
     method mostrar() {
@@ -65,28 +66,35 @@ object pantallaNombre {
     }
 }
 
-class PantallaFinal {
-    const titulo
-    const colorTitulo
-    const sonido
-    
+// El juego es de supervivencia: no se gana. Al terminar se muestra el resultado y las últimas partidas jugadas.
+object finDePartida {
+    // donde van los carteles del historial (dos columnas, dos filas)
+    const lugaresDelHistorial = [game.at(2, 2), game.at(6, 2), game.at(2, 1), game.at(6, 1)]
+
     method mostrar() {
         tablero.cubrirDePasto()
-        game.addVisual(new Cartel(position = game.at(4, 3),
-                                  text = titulo + ", " + jugador.nombre() + "!",
-                                  textColor = colorTitulo))
-        game.addVisual(new Cartel(position = game.at(4, 2), text = "ENTER para volver al menú"))
-        game.addVisual(new Cartel(position = game.at(4, 5), text = "zombies matados " + partida.zombiesMatados()))
+        game.addVisual(new Cartel(position = game.at(4, 5),
+                                  text = "Fin de la partida, " + jugador.nombre() + "!",
+                                  textColor = "FF4040FF"))
+        game.addVisual(new Cartel(position = game.at(4, 4),
+                                  text = "Tu resultado: " + historial.ultimoResultado().puntaje(),
+                                  textColor = "FFFF00FF"))
+        game.addVisual(new Cartel(position = game.at(4, 3), text = "Partidas jugadas: " + historial.cantidadDePartidas()))
+        self.mostrarHistorial()
+        game.addVisual(new Cartel(position = game.at(4, 0), text = "ENTER para volver al menú"))
         keyboard.enter().onPressDo({ juego.cambiar(menuPrincipal) })
     }
 
-    // se corta la música de la partida y suena una sola vez el sonido de ganar o perder
+    method mostrarHistorial() {
+        const partidas = historial.ultimasPartidas(lugaresDelHistorial.size())
+        partidas.size().times({ i =>
+            game.addVisual(new Cartel(position = lugaresDelHistorial.get(i - 1), text = partidas.get(i - 1).texto()))
+        })
+    }
+
+    // se corta la música de la partida y suena una sola vez el sonido del final
     method sonar() {
         musica.parar()
-        efectos.reproducir(sonido)
+        efectos.reproducir("derrota.mp3")
     }
 }
-
-object victoria inherits PantallaFinal(titulo = "Ganaste", colorTitulo = "FFFF00FF", sonido = "victoria.mp3") {}
-
-object derrota inherits PantallaFinal(titulo = "Perdiste", colorTitulo = "FF4040FF", sonido = "derrota.mp3") {}

@@ -1,68 +1,93 @@
 import manager.*
 import random.*
+import tablero.*
 import entidades.zombies.*
 
+// Las oleadas son infinitas y cada una es más difícil que la anterior (el juego es de supervivencia).
+// La colección de este manager es la cola de zombies que todavía no entraron al tablero.
 class Oleadas inherits Manager {
-  var property managerZombies = null
-  var ticksDeEsperaEntreOleadas = 0
-  var property numeroDeOleada = 0
+  const managerZombies
+  const azar = generadorDeNumeros // en los tests se reemplaza por un dado cargado
+  const cadaCuantasOleadasHayHorda = 5
+  const ticksMinimosDeDescanso = 50
+  const ticksMaximosDeDescanso = 100
+  var numeroDeOleada = 0
+  var ticksDeDescanso = 0
 
-  method tiposDisponiblesSegunOleada() { 
-    if (numeroDeOleada <= 2) return [{ pos => new Zombie(position = pos) }] 
-    if (numeroDeOleada <= 4) return [{ pos => new Zombie(position = pos) }, { pos => new ZombieCono(position = pos) }] 
-    return [{ pos => new Zombie(position = pos) }, { pos => new ZombieCono(position = pos) }, { pos => new ZombieCubo(position = pos) }] }
+  method numeroDeOleada() = numeroDeOleada
 
-
-   method crearZombieAleatorio() { 
-    const pos = game.at(8, (0 .. 4).anyOne()) 
-    return self.tiposDisponiblesSegunOleada().anyOne().apply(pos) 
-  }
-
-method generarNuevaOleada() {
-  numeroDeOleada += 1 
-  if (numeroDeOleada % 5 == 0) { 
-    game.say(self, "¡SE ACERCA UNA GRAN HORDA!") 
+  // mientras haya zombies en la cola, entra uno por tick; cuando se vacía, se descansa y viene la siguiente
+  override method hacerPorTick() {
+    if (self.hayEntidades()) {
+      self.desencolarZombie()
+    } else {
+      self.descansarOEmpezarOleada()
     }
-    const minZombies = numeroDeOleada 
-    const maxZombies = numeroDeOleada * 2
-
-    const cantidadBase = (minZombies .. maxZombies).anyOne()
-    const cantidadFinal = if (numeroDeOleada % 5 == 0) { cantidadBase * 2 } else { cantidadBase }
-     cantidadFinal.times({ i => self.agregarEntidad(self.crearZombieAleatorio()) })
   }
 
+  method descansarOEmpezarOleada() {
+    if (ticksDeDescanso == 0) {
+      self.generarNuevaOleada()
+      ticksDeDescanso = azar.numeroEntre(ticksMinimosDeDescanso, ticksMaximosDeDescanso)
+    } else {
+      ticksDeDescanso -= 1
+    }
+  }
+
+  method generarNuevaOleada() {
+    numeroDeOleada += 1
+    if (self.esHorda()) {
+      avisoDeHorda.mostrar()
+    }
+    self.cantidadDeZombies().times({ i => self.agregarEntidad(self.crearZombieAleatorio()) })
+  }
+
+  method esHorda() = numeroDeOleada % cadaCuantasOleadasHayHorda == 0
+
+  // entre la oleada y el doble; en las hordas, el doble de eso
+  method cantidadDeZombies() {
+    const cantidad = azar.numeroEntre(numeroDeOleada, numeroDeOleada * 2)
+    return if (self.esHorda()) cantidad * 2 else cantidad
+  }
+
+  // al principio solo zombies comunes, después se suman los de cono y más adelante los de cubo
+  method tiposDisponiblesSegunOleada() {
+    if (numeroDeOleada <= 2) return [{ pos => new Zombie(position = pos) }]
+    if (numeroDeOleada <= 4) return [{ pos => new Zombie(position = pos) }, { pos => new ZombieCono(position = pos) }]
+    return [{ pos => new Zombie(position = pos) }, { pos => new ZombieCono(position = pos) }, { pos => new ZombieCubo(position = pos) }]
+  }
+
+  method crearZombieAleatorio() = azar.unoDe(self.tiposDisponiblesSegunOleada()).apply(self.lugarDeEntrada())
+
+  // entran por la última columna, en cualquier fila de pasto
+  method lugarDeEntrada() = game.at(game.width() - 1, azar.numeroEntre(0, tablero.filaDelPanel() - 1))
 
   method desencolarZombie() {
-    if(self.hayEntidades()){
-     const zombie = Entidades.first() 
-     self.sacarEntidad(zombie) managerZombies.agregarEntidad(zombie)
-      game.addVisual(zombie)
+    const zombie = entidades.first()
+    self.sacarEntidad(zombie)
+    managerZombies.agregarEntidad(zombie)
+    game.addVisual(zombie)
+  }
+}
+
+// Cartel que avisa que viene una horda y se va solo a los pocos segundos
+object avisoDeHorda {
+  method position() = game.center()
+  method text() = "¡SE ACERCA UNA GRAN HORDA!"
+  method textColor() = "FF4040FF"
+
+  method mostrar() {
+    game.addVisual(self)
+    game.schedule(3000, { self.ocultar() })
+  }
+
+  // si la partida ya terminó, game.clear() lo sacó antes
+  method ocultar() {
+    if (game.hasVisual(self)) {
+      game.removeVisual(self)
     }
   }
-  /*override method hacerPorTick(){
-    self.desencolarZombie()
-  }
-  override method hacerPorCadaEntidad(entidad){
-    if (ticksDeEsperaEntreOleadas == 0) { 
-      self.generarNuevaOleada() // Define un tiempo de descanso aleatorio antes de la próxima horda (ej. entre 4 y 8 ticks) 
-      ticksDeEsperaEntreOleadas = (4 .. 8).anyOne() 
-      } 
-      else { 
-      ticksDeEsperaEntreOleadas -= 1  
-      self.desencolarZombie()
-      }
-  }
-  */
 
-  override method hacerPorTick() { 
-    if (not self.hayEntidades()) {
-       // Si la cola está vacía, genera una nueva oleada tras un descanso 
-       if (ticksDeEsperaEntreOleadas == 0) { 
-          self.generarNuevaOleada() 
-          ticksDeEsperaEntreOleadas = (50 .. 100).anyOne() // Pausa entre hordas 
-          } else { ticksDeEsperaEntreOleadas -= 1 } } 
-            else {
-               // Mientras haya zombies en cola, libera uno al mapa 
-               self.desencolarZombie() } } 
-    override method hacerPorCadaEntidad(entidad) { // Queda vacío: la responsabilidad de actualizar zombies es de ManagerZombies } }
-}} 
+  // está en el tablero: si el cabezal pasa por arriba, no pasa nada
+  method tocadoPorCabezal(cabezal) {}
+}

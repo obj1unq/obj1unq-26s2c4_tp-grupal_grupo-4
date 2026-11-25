@@ -4,9 +4,6 @@ import cabezal.*
 import cartas.*
 import juego.*
 import extras.*
-import managers.managerPlantas.ManagerPlantas
-import managers.managerProyectiles.ManagerProyectiles
-import managers.managerZombies.ManagerZobies
 
 describe "jugador" {
 
@@ -43,10 +40,7 @@ describe "jugador" {
 describe "cabezal" {
 
     method initialize() {
-        partida.managerProyectiles(new ManagerProyectiles())
-        partida.managerZombies(new ManagerZobies())
-        partida.managerPlantas(new ManagerPlantas(managerDeProyectiles = partida.managerProyectiles(),
-                                                  managerDeZombies = partida.managerZombies()))
+        partida.crearManagers()
         cabezal.position(game.at(3, 2))
         jugador.reiniciarSoles() // arranca con 150
     }
