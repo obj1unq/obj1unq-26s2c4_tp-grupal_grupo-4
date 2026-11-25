@@ -3,20 +3,16 @@ import tablero.*
 import jugador.*
 import cartas.*
 import juego.*
+import entidades.entidad.*
 
-object cabezal {
-    var property position = game.at(0, 0)
-
-    method image() = "cabezal.png"
-
-    // los managers de zombies y proyectiles le preguntan el tipo a todo lo que tienen en su celda,
-    // y el cabezal puede estar ahí. No hereda de Entidad porque no es una entidad del juego
-    method tipo() = "Cabezal"
+// hereda de Entidad: así tiene position, image y tipo como el resto de las cosas del tablero
+// (los managers de zombies y proyectiles le preguntan el tipo a todo lo que hay en su celda)
+object cabezal inherits Entidad(position = game.at(0, 0), image = "cabezal.png", tipo = "Cabezal") {
 
     // MOVIMIENTO: solo dentro del pasto, nunca sobre el panel
     method moverA(destino) {
         if (tablero.esCeldaDePasto(destino)) {
-            position = destino
+            self.position(destino)
         }
     }
 
@@ -43,7 +39,7 @@ object cabezal {
 
     // TECLAS Y COLISIONES
     method configurar() {
-        position = game.at(0, 0)
+        self.position(game.at(0, 0))
         game.addVisual(self)
         keyboard.up().onPressDo({ self.moverA(position.up(1)) })
         keyboard.down().onPressDo({ self.moverA(position.down(1)) })
