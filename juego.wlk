@@ -1,11 +1,10 @@
 import wollok.game.*
-import entidades.zombies.*
-import entidades.plantas.*
 import tablero.*
 import jugador.*
 import cabezal.*
 import menuPrincipal.*
 import sonidos.*
+import historial.*
 
 //Todos los manager
 import managers.managerZombies.ManagerZobies
@@ -25,7 +24,7 @@ object juego {
         game.schedule(1, { self.cambiar(menuPrincipal) })
     }
 
-    // Cada pantalla (menuPrincipal, pantallaNombre, partida, victoria, derrota) entiende mostrar() y sonar().
+    // Cada pantalla (menuPrincipal, pantallaNombre, partida, finDePartida) entiende mostrar() y sonar().
     // El juego no pregunta cuál es: limpia todo y le dice que se muestre y que suene (polimorfismo).
     method cambiar(pantalla) {
         game.clear()
@@ -40,27 +39,33 @@ object juego {
 }
 
 object partida {
-    var property managerProyectiles = null
-    var property managerZombies = null
-    var property managerPlantas = null
-    var property oleada = null
-    var property managerDeSoles = null
-    method tick() { 
-        oleada.tick() // 1\. La oleada revisa si debe spawnear/desencolar un zombie 
-        managerPlantas.tick() // 2\. Las plantas evalúan si disparan 
-        managerProyectiles.tick() // 3\. Los proyectiles avanzan e impactan 
-        managerZombies.tick() // 4\. Los zombies caminan o atacan 
-        managerDeSoles.tick()
-        self.chequearFinDelJuego()// 5\. Se verifica si un zombie llegó a x == 0 
-         }
+    // se crean de nuevo en cada partida (crearManagers). Desde afuera solo se consultan
+    var managerProyectiles = null
+    var managerZombies = null
+    var managerPlantas = null
+    var oleada = null
+    var managerDeSoles = null
 
+    method managerZombies() = managerZombies
+    method managerPlantas() = managerPlantas
+    method managerProyectiles() = managerProyectiles
+    method oleada() = oleada
+
+    // un solo tick para todo el juego, así el orden es siempre el mismo
+    method tick() {
+        oleada.tick()             // 1. si hay zombies en la cola, entra uno al tablero
+        managerPlantas.tick()     // 2. las plantas actúan (disparan, generan soles, explotan...)
+        managerProyectiles.tick() // 3. los proyectiles avanzan o le pegan a un zombie
+        managerZombies.tick()     // 4. los zombies mueren, comen o caminan
+        managerDeSoles.tick()     // 5. cada tanto cae un sol
+        self.chequearFinDelJuego() // 6. ¿algún zombie llegó a la casa?
+    }
 
     method mostrar() {
         jugador.reiniciarSoles()
         // primero hay que dibujar el tablero para que no pise a las plantas y a los zombies visualmente
         tablero.dibujarTablero()
         self.crearManagers()
-        //self.agregarEntidadesIniciales()
         cabezal.configurar()
         self.programarTicks()
     }
@@ -68,46 +73,39 @@ object partida {
     method sonar() {
         musica.poner("musicaPartida.mp3")
     }
-    method zombiesMatados() =  managerZombies.zombiesMatados()
+    method zombiesMatados() = managerZombies.zombiesMatados()
+
+    // cada manager recibe al crearse los otros managers que necesita
     method crearManagers() {
-        managerProyectiles = new ManagerProyectiles()
         managerZombies = new ManagerZobies()
-        managerPlantas = new ManagerPlantas(managerDeProyectiles = managerProyectiles, managerDeZombies = managerZombies) // agregado para que funcionen las nuevas clases
+        managerProyectiles = new ManagerProyectiles()
+        managerPlantas = new ManagerPlantas(managerDeProyectiles = managerProyectiles, managerDeZombies = managerZombies)
         oleada = new Oleadas(managerZombies = managerZombies)
         managerDeSoles = new ManagerDeSoles()
     }
 
-    /*method agregarEntidadesIniciales() {
-        const nuez1 = new Nuez (position = game.at(7,3))
-        const girasol1 = new Girasol (position = game.at(0,2))
-        const lanzaguisante1 = new LanzaGuisante (position = game.at(1  ,2))
-
-        //const zombie1 = new Zombie(position = game.at(8,3), velocidad= 1, daño = 10)
-        //oleada.agregarCantidadEntidad(3, {i=> new Zombie(position = game.at(1,0), velocidad = i+3, daño = 10)})
-        //managerZombies.agregarEntidad(zombie1)
-        managerPlantas.agregarEntidad(lanzaguisante1)
-        managerPlantas.agregarEntidad(girasol1)
-        managerPlantas.agregarEntidad(nuez1)
-
-        game.addVisual(lanzaguisante1)
-        //game.addVisual(zombie1)
-        game.addVisual(girasol1)
-        game.addVisual(nuez1)
-    }*/
-
     method programarTicks() {
-        game.onTick(250 , "mastertick", {self.tick()})
-        
+        game.onTick(250, "mastertick", { self.tick() })
     }
 
-    // FIN DEL JUEGO: la partida pregunta, los managers no necesitan conocerla
+    // FIN DEL JUEGO: es de supervivencia, no se gana. La partida termina cuando un zombie llega a la casa
     method perdioElJugador() = managerZombies.algunZombieLlegoALaCasa()
-
-    //method ganoElJugador() = not oleada.hayEntidades() and not managerZombies.hayEntidades()
 
     method chequearFinDelJuego() {
         if (self.perdioElJugador()) {
-            juego.terminar(derrota)
+            self.finalizar()
         }
     }
+
+    // se guarda el resultado en el historial y se pasa a la pantalla final
+    method finalizar() {
+        historial.registrar(self.resultado())
+        juego.terminar(finDePartida)
+    }
+
+    method resultado() = new Resultado(nombre = jugador.nombre(),
+                                       zombiesMatados = self.zombiesMatados(),
+                                       oleada = self.oleadaAlcanzada())
+
+    method oleadaAlcanzada() = oleada.numeroDeOleada()
 }

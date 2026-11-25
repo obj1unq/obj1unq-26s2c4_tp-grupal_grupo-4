@@ -1,12 +1,17 @@
-import entidades.entidad.*
 import wollok.game.*
 import tablero.*
 import jugador.*
 import cartas.*
 import juego.*
 
-object cabezal inherits Entidad(position = game.at(0, 0), tipo="Cabezal", image="cabezal.png"){
+object cabezal {
+    var property position = game.at(0, 0)
 
+    method image() = "cabezal.png"
+
+    // los managers de zombies y proyectiles le preguntan el tipo a todo lo que tienen en su celda,
+    // y el cabezal puede estar ahí. No hereda de Entidad porque no es una entidad del juego
+    method tipo() = "Cabezal"
 
     // MOVIMIENTO: solo dentro del pasto, nunca sobre el panel
     method moverA(destino) {

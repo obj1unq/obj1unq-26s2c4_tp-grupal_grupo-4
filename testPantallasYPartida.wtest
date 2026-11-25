@@ -1,0 +1,106 @@
+import wollok.game.*
+import jugador.*
+import juego.*
+import menuPrincipal.*
+import historial.*
+import entidades.zombies.*
+
+describe "pantallas" {
+
+    test "el menú principal se muestra" {
+        menuPrincipal.mostrar()
+        assert.that(game.hasVisual(menuPrincipal))
+    }
+
+    test "al mostrar la pantalla del nombre se borra el nombre anterior" {
+        jugador.escribirLetra("f")
+        pantallaNombre.mostrar()
+        assert.equals("", jugador.nombre())
+    }
+
+    test "el cartel muestra el nombre que se va escribiendo" {
+        jugador.borrarNombre()
+        jugador.escribirLetra("f")
+        jugador.escribirLetra("r")
+        assert.equals("Tu nombre: fr_", cartelNombre.text())
+    }
+
+    test "sin nombre no se puede confirmar" {
+        jugador.borrarNombre()
+        assert.throwsException({ pantallaNombre.confirmar() })
+    }
+}
+
+describe "partida" {
+
+    method initialize() {
+        partida.crearManagers()
+    }
+
+    // mete en el tablero un zombie ya muerto: en el próximo tick el manager lo saca y lo cuenta
+    method matarUnZombie() {
+        const zombie = new Zombie(position = game.at(5, 2), vida = 0)
+        game.addVisual(zombie)
+        partida.managerZombies().agregarEntidad(zombie)
+        partida.managerZombies().tick()
+    }
+
+    test "sin zombies el jugador no perdió" {
+        assert.notThat(partida.perdioElJugador())
+    }
+
+    test "un zombie que todavía camina no hace perder al jugador" {
+        partida.managerZombies().agregarEntidad(new Zombie(position = game.at(3, 2)))
+        assert.notThat(partida.perdioElJugador())
+    }
+
+    test "si un zombie llega a la casa el jugador perdió" {
+        partida.managerZombies().agregarEntidad(new Zombie(position = game.at(-1, 2)))
+        assert.that(partida.perdioElJugador())
+    }
+
+    test "la partida informa los zombies matados de su manager" {
+        self.matarUnZombie()
+        self.matarUnZombie()
+        assert.equals(2, partida.zombiesMatados())
+    }
+
+    test "al terminar, la partida guarda su resultado en el historial" {
+        partida.oleada().generarNuevaOleada()
+        self.matarUnZombie()
+        jugador.borrarNombre()
+        jugador.escribirLetra("f")
+        partida.finalizar()
+        assert.equals(1, historial.cantidadDePartidas())
+        assert.equals("f: 1 zombies, oleada 1", historial.ultimoResultado().texto())
+    }
+}
+
+describe "historial" {
+
+    test "un resultado muestra el nombre, los zombies matados y la oleada" {
+        const resultado = new Resultado(nombre = "fran", zombiesMatados = 12, oleada = 5)
+        assert.equals("fran: 12 zombies, oleada 5", resultado.texto())
+    }
+
+    test "se guarda cada partida y la última es la más reciente" {
+        historial.registrar(new Resultado(nombre = "fran", zombiesMatados = 12, oleada = 5))
+        historial.registrar(new Resultado(nombre = "rama", zombiesMatados = 30, oleada = 8))
+        assert.equals(2, historial.cantidadDePartidas())
+        assert.equals("rama: 30 zombies, oleada 8", historial.ultimoResultado().texto())
+    }
+
+    test "las últimas partidas salen de la más reciente a la más vieja y como mucho la cantidad pedida" {
+        historial.registrar(new Resultado(nombre = "a", zombiesMatados = 1, oleada = 1))
+        historial.registrar(new Resultado(nombre = "b", zombiesMatados = 2, oleada = 2))
+        historial.registrar(new Resultado(nombre = "c", zombiesMatados = 3, oleada = 3))
+        const ultimas = historial.ultimasPartidas(2)
+        assert.equals(["c: 3 zombies, oleada 3", "b: 2 zombies, oleada 2"], ultimas.map({ r => r.texto() }))
+    }
+
+    test "la pantalla final se puede mostrar con partidas en el historial" {
+        historial.registrar(new Resultado(nombre = "fran", zombiesMatados = 12, oleada = 5))
+        finDePartida.mostrar()
+        assert.equals(1, historial.cantidadDePartidas())
+    }
+}
