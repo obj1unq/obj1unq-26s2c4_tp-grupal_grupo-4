@@ -51,7 +51,7 @@ class LanzaGuisante inherits Planta (image = "lanzaguisantes.png", costoEnSoles 
 
 }
 
-class HielaGuisante inherits LanzaGuisante(image = "hieloguisante.png", costoEnSoles = 150, vida = 5, tipo = "Planta"){
+class HielaGuisante inherits LanzaGuisante(image = "hieloguisante.png", costoEnSoles = 175, vida = 5, tipo = "Planta"){
     // por ahora dispara igual que el lanzaguisante (hereda accionar)
     //se creara un proyectil de hielo eventualmente
     override method proyectilAUsar() {
@@ -82,7 +82,7 @@ class Girasol inherits Planta(image = "girasol.png", costoEnSoles = 50, vida = 5
     }
 }
 
-class Nuez inherits Planta (image = "nuez.png", costoEnSoles = 100, vida = 250, tipo = "Planta"){
+class Nuez inherits Planta (image = "nuez.png", costoEnSoles = 50, vida = 250, tipo = "Planta"){
 
 }
 
@@ -116,7 +116,7 @@ class PlantaExplosiva inherits Planta{
     
 }
 
-class Petacereza inherits PlantaExplosiva(image = "petaCereza.png", costoEnSoles = 200, vida = 50, tipo = "Planta", ticksPorAccion = 3){
+class Petacereza inherits PlantaExplosiva(image = "petaCereza.png", costoEnSoles = 150, vida = 50, tipo = "Planta", ticksPorAccion = 3){
 
     override method celdasAlrededor() = [
         self.position(),
@@ -131,7 +131,7 @@ class Petacereza inherits PlantaExplosiva(image = "petaCereza.png", costoEnSoles
     ]
 }
 
-class Patapum inherits PlantaExplosiva(image = "patapum.png", costoEnSoles = 50, vida = 50, tipo = "Planta", ticksPorAccion = 3){
+class Patapum inherits PlantaExplosiva(image = "patapum.png", costoEnSoles = 25, vida = 50, tipo = "Planta", ticksPorAccion = 3){
 
     override method accionar(manager){
         if (vida < 50){
