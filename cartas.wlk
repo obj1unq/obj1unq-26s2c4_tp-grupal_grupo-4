@@ -9,9 +9,10 @@ class Carta {
     const property tecla
     const property image
 
-    // cada carta se ubica en la columna de su tecla: la carta 2 en la columna 2.
-    // El número de la tecla ya viene dibujado en la imagen de cada carta
+    // cada carta se ubica en la columna de su tecla: la carta 2 en la columna 2
     method position() = game.at(tecla, tablero.filaDelPanel())
+    method text() = tecla.toString()
+    method textColor() = "FFFFFFFF"
 
     // el cabezal no pregunta qué carta es: le pide esto a cualquiera (polimorfismo)
     method crearPlantaEn(posicion)
