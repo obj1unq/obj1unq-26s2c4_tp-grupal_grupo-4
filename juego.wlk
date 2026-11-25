@@ -103,7 +103,7 @@ object partida {
         juego.terminar(finDePartida)
     }
 
-    method resultado() = new Resultado(nombre = jugador.nombre(),
+    method resultado() = new Resultado(nombre = jugador.nombre(), 
                                        zombiesMatados = self.zombiesMatados(),
                                        oleada = self.oleadaAlcanzada())
 

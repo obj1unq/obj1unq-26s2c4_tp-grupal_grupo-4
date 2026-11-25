@@ -4,11 +4,11 @@ import managers.manager.*
 class ManagerZobies inherits Manager {
   var property zombiesMatados = 0
   override method hacerPorCadaEntidad(zombie) {
-    //self.checkearColision(entidad)
-    if(zombie.puedeMover() and not zombie.tieneQueMorir() and not self.colisionoConPlanta(zombie)){ 
+    //self.checkearColision(entidad) // zombie.VerificarMovimiento()
+    if(zombie.puedeMover() and not zombie.tieneQueMorir() and not self.hayColisionConPlanta(zombie)){ // refactorizar condicion
     zombie.moverZombie()
       }else{
-        if(self.colisionoConPlanta(zombie)){
+        if(self.hayColisionConPlanta(zombie)){
           self.colisionConPlanta(zombie)
         }else{ 
           zombiesMatados += 1
@@ -23,7 +23,7 @@ class ManagerZobies inherits Manager {
     zombie.atacar(plantaColisionada)
   }
 
-  method colisionoConPlanta(zombie){
+  method hayColisionConPlanta(zombie){
     return not self.listaDeColisiones(zombie).filter({entidad => entidad.tipo() == "Planta"}).isEmpty()
   }
   // consulta para la partida: un zombie que ya no puede avanzar llegó a la casa
