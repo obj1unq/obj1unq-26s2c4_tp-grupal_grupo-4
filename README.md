@@ -6,9 +6,9 @@ _(Git Grupal: https://docs.google.com/presentation/d/1-o5zEUfuUT72ea8q2rk8mwHSqM
 
 ## Equipo de desarrollo
 
-- Ramiro Porcuna
-- Kevin Ontiveros
-- Francisco Rizo Patrón
+• Ramiro Porcuna
+• Kevin Ontiveros
+• Francisco Rizo Patrón
 
 ## Capturas
 
@@ -16,23 +16,31 @@ _(Git Grupal: https://docs.google.com/presentation/d/1-o5zEUfuUT72ea8q2rk8mwHSqM
 
 ## Reglas de Juego / Instrucciones
 
-Idea del juego: 
-Va a ser un Plantas vs zombies básico.
+## Idea del juego: 
+Nuestra idea fue hacer una version modificada de plantas vs zombies para wollok. Enforcada mas en un estilo arcade.
+Se usa un cabezal para moverse en un tablero 9 x 5, donde podes elegir donde poner tus plantas para defenderte.
+El juego te da 8 plantas para usar y una pala para sacarlas, mientras distintos tipos de zombies siguen llegando por el lado derecho del tablero
+El objetivo es aguantar lo maximo posible. Al finalizar el juego, se mostrara cuantos zombies asesinaste y cuantas oleadas resististe
 
-Primero tenemos que armar un prototipo para luego escalarlo. 
-
-El prototipo requiere que funcione el tablero. 
-
-EL tablero deberia tener 5 filas x 9 columnas.
-
-Tiene que existir un girasol, un lanzaguisante y un zombie. Para iniciar. 
-
+## Controles:
+•Movimiento Cabezal: Tecla Izq 
+                     Tecla Der 
+                     Tecla Arr
+                     Tecla Abj
+•Plantas: Girasol (Tecla 1)
+          Lanzaguisantes (Tecla 2)
+          Nuez (Tecla 3)
+          Petacereza (Tecla 4)
+          Patapum (Tecla 5)
+          Repetidora (Tecla 6)
+          Planta Carnivora (Tecla 7)
+          Hielaguisante (Tecla 8)
+•Pala: Tecla X
 
 
 
 
 ## Otros
 
-- Curso/Facultad
-- Versión de wollok
-- Una vez terminado, no tenemos problemas en que el repositorio sea público / queremos manternerlo privado.
+Curso: Programacion con Objetos I, Comisión 4
+Facultad: Universidad Nacional De Quilmes
